@@ -1,0 +1,175 @@
+﻿@model Group4_GlassesShop.Models.DataModel.BlogModel
+@{
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+@using System.Net
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Create Blog</title>
+
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+    <!-- Main CSS-->
+    <link href="../Data/cssBlog/main.css" rel="stylesheet" media="all">
+</head>
+<style>
+    .ck-editor__editable {
+        height: 300px; /* Đặt chiều cao mong muốn */
+    }
+</style>
+<body>
+    <div class="page-wrapper bg-white p-t-100 p-b-50">
+        <div class="wrapper wrapper--w900">
+            <div class="card card-6">
+                <div class="card-heading bg-white">
+                    <h2 class="title" style="color: black;">Create New Blog</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("CreateBlog", "ManagerBlog", FormMethod.Post, new { id = "CreateNewBlog" }))
+                    {
+                        <div class="form-row">
+                            <div class="name">Title</div>
+                            <div class="value">
+                                @Html.TextBox("Title", null, new { @class = "input--style-6" })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Content</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    @Html.TextAreaFor(model => model.Content, new { @class = "textarea--style-6", @id = "contentTextArea" })
+                                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        @Html.HiddenFor(model => model.Content, new { @id = "contentHidden" })
+                        <div class="form-row">
+                            <div class="name">Category Name</div>
+                            <div class="value">
+                                <select class="input--style-6" name="CategoryBlogId" onchange="toggleCategoryInput(this)">
+                                    @foreach(var catBlog in context.CategoryBlogs.ToList()){
+                                    <option value="@catBlog.CategoryBlogId">@catBlog.Cname</option>
+                                    }
+                                    <option value="-1">Other</option>
+                                </select>
+                                <input type="text" id="otherCategory" name="OtherCategory" style="display: none;" placeholder="Enter category name">
+                                <div id="error-message" style="display: none; color: red;"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="value">
+                                <input type="text">
+                                <div class="input-group js-input-file">
+                                    <input class="input-file" type="file" name="Image" id="file" />
+                                    <label class="label--file" for="file">Choose file</label>
+                                    <span class="input-file__info">No file chosen</span>
+                                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Status</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <label>
+                                        <input type="radio" name="Status" value="true" checked> Active
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="Status" value="false"> Nonactive
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn--radius-2 btn--blue-2" type="submit">Create</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="../Data/vendor/jquery/jquery.min.js"></script>
+
+
+    <!-- Main JS-->
+    <script src="../Data/jsBlog/global.js"></script>
+    <script src="~/plugin/ckeditor/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#contentTextArea'))
+            .then(editor => {
+                editor.model.document.on('change:data', () => {
+                    const content = editor.getData();
+                    document.querySelector('#contentHidden').value = content;
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        function toggleCategoryInput(selectElement) {
+            var otherCategoryInput = document.getElementById('otherCategory');
+            if (selectElement.value === '-1') {
+                otherCategoryInput.style.display = 'block';
+                otherCategoryInput.setAttribute('required', 'required');
+            } else {
+                otherCategoryInput.style.display = 'none';
+                otherCategoryInput.removeAttribute('required');
+            }
+        }
+
+        var selectElement = document.querySelector('select[name="CategoryBlogId"]');
+        selectElement.addEventListener('change', function () {
+            var otherCategoryInput = document.getElementById('otherCategory');
+            if (this.value === '-1') {
+                if (!otherCategoryInput) {
+                    otherCategoryInput = document.createElement('input');
+                    otherCategoryInput.type = 'text';
+                    otherCategoryInput.id = 'otherCategory';
+                    otherCategoryInput.name = 'OtherCategory';
+                    otherCategoryInput.placeholder = 'Enter category name';
+                    otherCategoryInput.setAttribute('required', 'required');
+                    otherCategoryInput.style.display = 'block';
+
+                    this.parentNode.appendChild(otherCategoryInput);
+                }
+            } else {
+                if (otherCategoryInput) {
+                    otherCategoryInput.parentNode.removeChild(otherCategoryInput);
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var formElement = document.getElementById('CreateNewBlog');
+            formElement.addEventListener('submit', function (event) {
+                var otherCategoryInput = document.getElementById('otherCategory');
+                if (otherCategoryInput.value.length < 10) {
+                    event.preventDefault(); // Ngăn chặn việc submit form
+
+                    // Hiển thị thông báo lỗi
+                    var errorElement = document.getElementById('error-message');
+                    errorElement.style.display = 'block';
+                    errorElement.textContent = 'Please enter at least 10 characters.';
+
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

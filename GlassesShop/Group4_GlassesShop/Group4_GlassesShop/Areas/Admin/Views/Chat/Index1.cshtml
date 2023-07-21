@@ -1,0 +1,141 @@
+﻿@model List<Group4_GlassesShop.Models.DataModel.ChatDetail>
+
+@{
+	ViewData["Title"] = "Message Manager";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../LayoutAdmin/css/chat.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+<div class="card chat-app" style="height:100%;">
+	<div id="plist" class="people-list">
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text"><i class="fa fa-search"></i></span>
+			</div>
+			<input type="text" class="form-control" placeholder="Search...">
+		</div>
+		<ul class="list-unstyled chat-list mt-2 mb-0" style="width: 100%;height: 75%;overflow-y: auto;overflow-x: hidden;">
+			@{
+				dynamic chatList = ViewBag.listUser;
+			}
+			@foreach (dynamic c in chatList)
+			{
+				<li class="clearfix">
+					<a href="#" onclick="submitForm('@c.AccID','@c.CustomerAvatarUrl', '@c.CustomerName')">
+						<img src="@c.CustomerAvatarUrl" alt="avatar">
+						<div class="about">
+							<div class="name">@c.CustomerName</div>
+							@*<div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>*@
+						</div>
+					</a>
+				</li>
+			}
+			<script>
+				function submitForm(accID, avatarUrl, customerName) {
+					document.getElementById("susuInput").value = accID;
+					document.getElementById("susuForm").submit();
+					document.querySelector(".chat-about img").src = avatarUrl;
+					document.querySelector(".chat-about h6").textContent = customerName;
+				}
+			</script>
+
+		</ul>
+		<form id="susuForm" action="/admin/Chat/Susu" method="post" style="display: none;">
+			<input type="hidden" name="susu" id="susuInput">
+		</form>
+	</div>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const scrollableDiv = document.querySelector('.chat-history');
+			scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+		});
+	</script>
+	<div class="chat" style="height:590px;overflow: hidden;">
+		@if (Model != null)
+		{
+			<div class="chat-header clearfix">
+				<div class="row">
+					<div class="col-lg-6">
+						<a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+							<img src="@ViewBag.image" alt="avatar">
+						</a>
+						<div class="chat-about">
+							<h6 class="m-b-0">@ViewBag.nameCus</h6>
+							@*<small>Last seen: 2 hours ago</small>*@
+						</div>
+					</div>
+					<div class="col-lg-6 hidden-sm text-right">
+						@*<a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="fa fa-camera"></i></a>
+					<a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
+					<a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
+					<a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a>*@
+					</div>
+				</div>
+			</div>
+		}
+		<div class="chat-history" style="width: 100%;height: 75%;overflow-y: auto;overflow-x: hidden;">
+			<ul class="m-b-0">
+				@if (Model != null)
+				{
+					@*var cld = (List<Group4_GlassesShop.Models.DataModel.ChatDetail>)TempData["chatlistdetail"];*@
+					foreach (var c in Model)
+					{
+						if (c.Role == 1)
+						{
+							<li class="clearfix">
+								<div class="message-data text-right">
+									<span class="message-data-time">@c.TimeChat</span>
+									<img src="@ViewBag.image" alt="avatar">
+								</div>
+								<div class="message other-message float-right">@c.Text</div>
+							</li>
+						}
+						else if (c.Role == 0)
+						{
+							<li class="clearfix">
+								<div class="message-data">
+									<span class="message-data-time">@c.TimeChat</span>
+								</div>
+								<div class="message my-message">@c.Text</div>
+							</li>
+						}
+					}
+				}
+			</ul>
+		</div>
+		@if (Model != null)
+		{
+			<div class="chat-message clearfix">
+				<form id="myForm" asp-action="Send" method="POST">
+					<div class="input-group mb-0">
+						<div class="input-group-prepend">
+							<span id="submitButton" class="input-group-text"><i class="fa fa-send"></i></span>
+						</div>
+						<input type="text" name="Text" class="form-control" placeholder="Enter text here...">
+						<input type="hidden" name="Role" class="form-control" value="0">
+						<input type="hidden" name="ChatId" class="form-control" value="0" />
+						<input type="hidden" name="TimeChat" class="form-control" value="@DateTime.Now" />
+
+					</div>
+				</form>
+				<script>
+					document.getElementById("submitButton").addEventListener("click", function () {
+						document.getElementById("myForm").submit();
+					});
+				</script>
+			</div>
+		}
+	</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>

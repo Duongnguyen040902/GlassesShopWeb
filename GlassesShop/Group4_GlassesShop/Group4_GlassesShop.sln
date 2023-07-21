@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Group4_GlassesShop", "Group4_GlassesShop\Group4_GlassesShop.csproj", "{2A4E1B5A-91A5-49C6-A5F3-8EB30D107FF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryBlog.Tests", "RepositoryBlog.Tests\RepositoryBlog.Tests.csproj", "{F3D36589-6A93-40C6-B8A6-646E846D47E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A4E1B5A-91A5-49C6-A5F3-8EB30D107FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4E1B5A-91A5-49C6-A5F3-8EB30D107FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4E1B5A-91A5-49C6-A5F3-8EB30D107FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4E1B5A-91A5-49C6-A5F3-8EB30D107FF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D36589-6A93-40C6-B8A6-646E846D47E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D36589-6A93-40C6-B8A6-646E846D47E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D36589-6A93-40C6-B8A6-646E846D47E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D36589-6A93-40C6-B8A6-646E846D47E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {857AB31F-8667-41E4-B484-737D48879828}
+	EndGlobalSection
+EndGlobal

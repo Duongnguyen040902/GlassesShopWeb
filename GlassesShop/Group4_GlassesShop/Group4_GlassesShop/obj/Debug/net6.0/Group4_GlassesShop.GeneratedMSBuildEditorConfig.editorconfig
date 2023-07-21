@@ -1,0 +1,261 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Group4_GlassesShop
+build_property.RootNamespace = Group4_GlassesShop
+build_property.ProjectDir = D:\RepositoryGitHub\shopglasses\GlassesShop\Group4_GlassesShop\Group4_GlassesShop\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\RepositoryGitHub\shopglasses\GlassesShop\Group4_GlassesShop\Group4_GlassesShop
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Accounts/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Accounts/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Accounts/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Accounts/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/AdminDashboard/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5EYXNoYm9hcmRcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Chat/Index1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2hhdFxJbmRleDEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Feedback/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRmVlZGJhY2tcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Feedback/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRmVlZGJhY2tcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/ManagerStock/AddStock.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWFuYWdlclN0b2NrXEFkZFN0b2NrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/ManagerStock/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWFuYWdlclN0b2NrXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/ManagerStock/ListStock.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWFuYWdlclN0b2NrXExpc3RTdG9jay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Orders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Orders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Orders/_FilteredResults.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXF9GaWx0ZXJlZFJlc3VsdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Products/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Products/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Products/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Products/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/BlogManager/Views/ManagerBlog/CreateBlog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQmxvZ01hbmFnZXJcVmlld3NcTWFuYWdlckJsb2dcQ3JlYXRlQmxvZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/BlogManager/Views/ManagerBlog/DetailsBlog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQmxvZ01hbmFnZXJcVmlld3NcTWFuYWdlckJsb2dcRGV0YWlsc0Jsb2cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/BlogManager/Views/ManagerBlog/EditBlog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQmxvZ01hbmFnZXJcVmlld3NcTWFuYWdlckJsb2dcRWRpdEJsb2cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/BlogManager/Views/ManagerBlog/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQmxvZ01hbmFnZXJcVmlld3NcTWFuYWdlckJsb2dcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Areas/BlogManager/Views/ManagerBlog/_PartialSearchBlog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQmxvZ01hbmFnZXJcVmlld3NcTWFuYWdlckJsb2dcX1BhcnRpYWxTZWFyY2hCbG9nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Address/AddressView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc1xBZGRyZXNzVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Address/CreateAddress.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc1xDcmVhdGVBZGRyZXNzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Address/UpdateAddress.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc1xVcGRhdGVBZGRyZXNzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Address/_Districts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc1xfRGlzdHJpY3RzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Address/_Wards.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc1xfV2FyZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/BlogDetails/BlogDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ0RldGFpbHNcQmxvZ0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Blog/Blog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1xCbG9nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Cart/Cart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDYXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Cart/Checkout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDaGVja291dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Cart/_Districts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxfRGlzdHJpY3RzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Cart/_Ward.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxfV2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/ChangePassword/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbmdlUGFzc3dvcmRcQ2hhbmdlUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/ChangePassword/MatchCodeChange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbmdlUGFzc3dvcmRcTWF0Y2hDb2RlQ2hhbmdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/ChangePassword/SendCode.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbmdlUGFzc3dvcmRcU2VuZENvZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/CustomerProfile/UpdateProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJQcm9maWxlXFVwZGF0ZVByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/CustomerProfile/UserProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJQcm9maWxlXFVzZXJQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Feedback/CreateFeedback.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tcQ3JlYXRlRmVlZGJhY2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Feedback/EditFeedback.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tcRWRpdEZlZWRiYWNrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/ForgotPassword/ChangePassWordForgot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm9yZ290UGFzc3dvcmRcQ2hhbmdlUGFzc1dvcmRGb3Jnb3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/ForgotPassword/Forgot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm9yZ290UGFzc3dvcmRcRm9yZ290LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/ForgotPassword/MatchCodeForgot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm9yZ290UGFzc3dvcmRcTWF0Y2hDb2RlRm9yZ290LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Login/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/OrderHistory/MyOrderList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJIaXN0b3J5XE15T3JkZXJMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/OrderHistory/OrderDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJIaXN0b3J5XE9yZGVyRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Register/ConfirmEmailCode.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaXN0ZXJcQ29uZmlybUVtYWlsQ29kZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Register/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaXN0ZXJcUmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Shared/_BlogList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9CbG9nTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Shared/_ChatUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DaGF0VXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Shop/GetProductByPid.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxHZXRQcm9kdWN0QnlQaWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Shop/Shop.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxTaG9wLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/WishList/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2lzaExpc3RcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/RepositoryGitHub/shopglasses/GlassesShop/Group4_GlassesShop/Group4_GlassesShop/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-t46rn7o9g2

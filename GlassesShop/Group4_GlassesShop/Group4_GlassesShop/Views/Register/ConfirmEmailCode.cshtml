@@ -1,0 +1,240 @@
+﻿@{
+    ViewData["Title"] = "ConfirmEmailCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../DataLogin/fonts_login/icomoon/style.css">
+    <link rel="stylesheet" href="../DataLogin/owl.carousel.min.css">
+    <link rel="stylesheet" href="../DataLogin/css_login/bootstrap.min.css">
+    <link rel="stylesheet" href="../DataLogin/css_login/style.css">
+}
+@using (Html.BeginForm("ConfirmEmailCode", "Register", FormMethod.Post, new { id = "Confirm" }))
+{
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="../DataLogin/images_login/confirmm.png" alt="Image" class="img-fluid">
+                </div>
+                <div class="col-md-6 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h3>Confirm Code</h3>
+                            </div>
+                            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                            {
+                                <span class="text-danger">@ViewBag.ErrorMessage</span>
+                            }
+                            <div class="form-group last mb-4">
+                                <input type="text" class="form-control" id="code" name="code" placeholder="Your Code">
+                                <div id="countdownElement" style="text-align:right"></div>
+                                <button type="button" id="resetButton" class="btn btn-block btn-secondary" style="display: none;">Reset Timer</button>
+                            </div>
+                            <input type="hidden" id="countdownActive" name="countdownActive" value="@ViewBag.CountdownActive">
+                            <input type="submit" value="Confirm" class="btn btn-block btn-primary">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section login{
+    <script src="js_login/jquery-3.3.1.min.js"></script>
+    <script src="js_login/popper.min.js"></script>
+    <script src="js_login/bootstrap.min.js"></script>
+    <script src="js_login/main.js"></script>
+}
+
+@*
+@section Setimeout {
+    <script>
+        var countdownElement = document.getElementById('countdownElement');
+        var resetButton = document.getElementById('resetButton');
+        var timeoutSeconds = @ViewBag.SessionTimeoutSeconds;
+        var countdownActive = '@ViewBag.CountdownActive';
+
+        function startCountdown(timeRemaining) {
+            var countdown = setInterval(function () {
+                countdownElement.innerHTML = timeRemaining + ' seconds';
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    countdownElement.innerHTML = "";
+                    resetButton.style.display = "block";
+                }
+
+                timeRemaining--;
+            }, 1000);
+        }
+
+        startCountdown(timeoutSeconds); // Khởi động countdown với số giây ban đầu
+
+        document.getElementById('Confirm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn chặn submit form mặc định
+
+            countdownActive = 'false';
+            document.getElementById('countdownActive').value = countdownActive;
+
+            var codeInput = document.getElementById('code');
+            var code = codeInput.value;
+
+            if (code !== '@TempData["codeEmail"]') {
+                countdownElement.innerHTML = "Code does not match! Please try again."; // Hiển thị thông báo lỗi
+            } else {
+                var remainingSeconds = parseInt(countdownElement.innerHTML) - 1; // Lấy số giây hiện tại và giảm đi 1
+                countdownElement.innerHTML = remainingSeconds + ' seconds'; // Cập nhật số giây mới
+                codeInput.value = ""; // Xóa giá trị nhập vào
+
+                if (remainingSeconds <= 0) {
+                    resetButton.style.display = "block"; // Hiển thị nút "Reset Timer" khi countdown kết thúc
+                }
+            }
+        });
+
+        if (countdownActive === 'false') {
+            resetButton.style.display = "block";
+        }
+
+        document.getElementById('resetButton').addEventListener('click', function () {
+            // Gửi yêu cầu Ajax để lấy mã mới và số giây countdown
+            var countdownElement = document.getElementById('countdownElement');
+            var resetButton = document.getElementById('resetButton');
+
+            // Hiển thị "Sending..." hoặc hiệu ứng tương tự để cho người dùng biết rằng email đang được gửi
+            countdownElement.innerHTML = "Sending...";
+            resetButton.disabled = true;
+
+            // Khởi động countdown mới
+            startCountdown(60); // 60 giây countdown mới
+
+            // Gọi lại phương thức ResendCodeAsync trên server để gửi email và nhận mã mới (không sử dụng yêu cầu Ajax)
+            fetch('/Register/ResendCodeAsync')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    var newCode = data.code;
+                    var countdownSeconds = data.countdownSeconds;
+
+                    countdownElement.innerHTML = countdownSeconds + ' seconds'; // Hiển thị số giây countdown mới
+                    resetButton.disabled = false; // Kích hoạt lại nút "Resend"
+
+                    //// Gửi mã mới đến email của người dùng (thực hiện logic tại đây)
+                    //sendEmail(email, newCode);
+                })
+                .catch(function (error) {
+                    console.error('Error: ' + error);
+                    countdownElement.innerHTML = "Error occurred. Please try again."; // Hiển thị thông báo lỗi
+                    resetButton.disabled = false; // Kích hoạt lại nút "Resend"
+                });
+        });
+
+        // Function to send email
+        //function sendEmail(email, code) {
+        //    // Implementation for sending email
+        //    // Replace this with your actual implementation
+        //    // ...
+        //}
+
+    </script>
+}
+*@
+
+
+@*So giay reset*@
+
+@*@section Setimeout {
+    <script>
+        var countdownElement = document.getElementById('countdownElement');
+        var resetButton = document.getElementById('resetButton');
+        var initialTime = @ViewBag.InitialTime;
+        var countdownActive = '@ViewBag.CountdownActive';
+
+        function startCountdown() {
+            var timeRemaining = initialTime;
+            countdownElement.innerHTML = timeRemaining + ' seconds'; // Hiển thị số giây khi bắt đầu
+
+            var countdown = setInterval(function () {
+                timeRemaining--;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    countdownElement.innerHTML = "";
+                    resetButton.style.display = "block";
+                } else {
+                    countdownElement.innerHTML = timeRemaining + ' seconds'; // Cập nhật số giây
+                }
+            }, 1000);
+        }
+
+        function resetCountdown() {
+            countdownActive = 'false';
+            countdownElement.innerHTML = "";
+            resetButton.style.display = "none";
+            startCountdown();
+        }
+
+        startCountdown();
+
+        document.getElementById('Confirm').addEventListener('submit', function (e) {
+            var codeInput = document.getElementById('code');
+            var code = codeInput.value;
+            if (code !== '@TempData["codeEmail"]') {
+                e.preventDefault();
+                countdownActive = 'true';
+                resetButton.style.display = 'block';
+            }
+
+            var countdownActiveInput = document.getElementById('countdownActive');
+            countdownActiveInput.value = countdownActive;
+        });
+
+        if (countdownActive === 'false') {
+            startCountdown();
+        } else {
+            resetCountdown();
+        }
+    </script>
+}
+*@
+
+@section Setimeout {
+    <script>
+        var countdownElement = document.getElementById('countdownElement');
+        var resetButton = document.getElementById('resetButton');
+        var timeoutSeconds = @ViewBag.SessionTimeoutSeconds;
+        var countdownActive = '@ViewBag.CountdownActive';
+
+        function startCountdown() {
+            var timeRemaining = timeoutSeconds;
+            var countdown = setInterval(function () {
+                countdownElement.innerHTML = timeRemaining + ' seconds';
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    countdownElement.innerHTML = "";
+                    resetButton.style.display = "block";
+                }
+
+                timeRemaining--;
+            }, 1000);
+        }
+
+        startCountdown();
+
+        document.getElementById('Confirm').addEventListener('submit', function () {
+            countdownActive = 'false';
+            document.getElementById('countdownActive').value = countdownActive;
+        });
+
+        if (countdownActive === 'false') {
+            resetButton.style.display = "block";
+        }
+    </script>
+}

@@ -1,0 +1,88 @@
+﻿@model Group4_GlassesShop.Models.DataModel.AccountModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../DataLogin/fonts_login/icomoon/style.css">
+    <link rel="stylesheet" href="../DataLogin/owl.carousel.min.css">
+    <link rel="stylesheet" href="../DataLogin/css_login/bootstrap.min.css">
+    <link rel="stylesheet" href="../DataLogin/css_login/style.css">
+}
+<body>
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="../DataLogin/images_login/undraw_remotely_2j6y.svg" alt="Image" class="img-fluid">
+                    </div>
+                    <div class="col-md-6 contents">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="mb-4">
+                                    <h3>Sign In</h3>
+                                    @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+                                    {
+                                        <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(ViewBag.message))
+                                    {
+                                        <span class="text-danger">@ViewBag.message</span>
+                                    }
+                                </div>
+                                @Html.LabelFor(model => model.Email, "Email*", new { @class = "control-label" })
+                                <div class="form-group first">
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.Password, "Your Password*", new { @class = "control-label" })
+                                <div class="form-group last mb-4">
+                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="d-flex mb-5 align-items-center">
+                                    <label class="control control--checkbox mb-0">
+                                        <span class="caption">Remember me</span>
+                                        <input type="checkbox" checked="checked" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                    <span class="ml-auto"><a href="@Url.Action("Forgot", "ForgotPassword")" class="forgot-pass">Forgot Password</a></span>
+                                </div>
+                                <span class="ml-auto">
+                                    <a href="@Url.Action("Register", "Register")" class="forgot-pass">Don't have an account? Register</a>
+                                </span>
+
+                                <input type="submit" value="Log In" class="btn btn-block btn-primary">
+
+                                <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
+
+                                <div class="social-login">
+                                    <a href="#" class="facebook">
+                                        <span class="icon-facebook mr-3"></span>
+                                    </a>
+                                    <a href="#" class="twitter">
+                                        <span class="icon-twitter mr-3"></span>
+                                    </a>
+                                    <a href="#" class="google">
+                                        <span class="icon-google mr-3"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @section login {
+        <script src="js_login/jquery-3.3.1.min.js"></script>
+        <script src="js_login/popper.min.js"></script>
+        <script src="js_login/bootstrap.min.js"></script>
+        <script src="js_login/main.js"></script>
+    }
+</body>

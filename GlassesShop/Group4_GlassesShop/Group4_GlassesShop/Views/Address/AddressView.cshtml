@@ -1,0 +1,274 @@
+﻿@model IEnumerable<Group4_GlassesShop.Models.AddresManager.AddressManager>
+@{
+    ViewData["Title"] = "AddressView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext glShop = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .title-style {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: hsl(52, 0%, 98%);
+        }
+
+        .title-quote {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 400;
+            color: hsl(52, 0%, 98%);
+        }
+
+        .form-label {
+            text-align: center;
+            align-items: center;
+        }
+
+        .form-outline {
+            display: inline-block;
+            text-align: center;
+            align-items: center;
+            height: 39px;
+        }
+
+        div.form-outline.mb-0 {
+            margin: 0px;
+            text-align: center;
+            align-items: center;
+            height: 39px;
+        }
+
+        .nice-select select {
+            height: 30px;
+        }
+
+        body {
+            margin-top: 20px;
+            background-color: #f2f6fc;
+            color: #69707a;
+        }
+
+        .img-account-profile {
+            height: 10rem;
+        }
+
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+
+        .card {
+            box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+        }
+
+            .card .card-header {
+                font-weight: 500;
+            }
+
+        .card-header:first-child {
+            border-radius: 0.35rem 0.35rem 0 0;
+        }
+
+        .card-header {
+            padding: 1rem 1.35rem;
+            margin-bottom: 0;
+            background-color: rgba(33, 40, 50, 0.03);
+            border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+        }
+
+        .form-control, .dataTable-input {
+            display: block;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1;
+            color: #69707a;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #c5ccd6;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0.35rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .nav-borders .nav-link.active {
+            color: #0061f2;
+            border-bottom-color: #0061f2;
+        }
+
+        .nav-borders .nav-link {
+            color: #69707a;
+            border-bottom-width: 0.125rem;
+            border-bottom-style: solid;
+            border-bottom-color: transparent;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        .card-header ul li a {
+            font-size: 15px;
+            color: #111111;
+            display: block;
+            font-weight: 600;
+            position: relative;
+            padding: 3px 7px;
+        }
+
+        .card-header ul {
+            padding-left: 0px;
+        }
+
+        .col-xl-6 {
+            height: 335px;
+        }
+
+        .button_create {
+            margin: 0px 0px 20px 25px;
+        }
+
+        .button_edit button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+            transition: box-shadow 0.3s ease;
+        }
+
+            .button_edit button:hover {
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+            }
+
+        .alert {
+            margin: 0px;
+            padding: 3px;
+        }
+
+        .button_edit {
+            display: inline-block;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 3px 6px 3px 6px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            margin-top: -9px;
+        }
+
+            .button:hover {
+                background-color: #0056b3;
+            }
+
+            .button:active {
+                background-color: #004080;
+            }
+
+        .form-outline {
+            margin: 130px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-xl px-4 mt-4">
+
+        <nav class="nav nav-borders">
+            <a class="nav-link" href="@Url.ActionLink("UserProfile","CustomerProfile")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My Profile</a>
+            <a class="nav-link" href="@Url.ActionLink("MyOrderList","OrderHistory")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My order</a>
+            <a class="nav-link active ms-0" href="@Url.ActionLink("AddressView","Address")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Address</a>
+            <a class="nav-link" href="@Url.ActionLink("SendCode","ChangePassword")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Change password</a>
+        </nav>
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col-xl-5">
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header" style="font-weight:bold ; color: black">Hello! @ViewBag.CustomerName </div>
+                    <div class="card-body text-center">
+                        <img class="img-account-profile rounded-circle mb-2" src="@ViewBag.CustomerAvatar" alt="Avatar">
+                        <div class="small font-italic text-muted mb-4">@ViewBag.AccountEmail</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6" style="height:95%; margin-bottom: 30px;">
+                @if (!string.IsNullOrEmpty(ViewBag.SuccessUpdateAddress))
+                {
+                    <div class="alert alert-success">@ViewBag.SuccessUpdateAddress</div>
+                }
+                <div class="card my-1 shadow-6" style="height:95%; margin-top:0px;">
+                    <div class="row g-0">
+                        <div class="col-xl-12">
+                            <div class="card-body p-md-0 text-black" style="width:100%">
+                                <h3 class="mb-0 text-uppercase" style="text-align:center; padding: 15px; font-size:26px; font-weight: bold;">Delivery address</h3>
+                                @if (Model.Any())
+                                {
+                                    <div class="button_create">
+                                        <a class="button" href="@Url.ActionLink("CreateAddress", "Address")">
+                                            Add New Address
+                                        </a>
+                                    </div>
+                                    @foreach (var address in Model)
+                                    {
+                                        @if (address.Province == null || address.District == null || address.Ward == null)
+                                        {
+                                            <div class="form-outline1 mb-0 d-flex align-items-center">
+                                                <label class="form-label" for="form3Example3" style="margin:70px 30px 70px 45px;">You do not have shipping address information yet!</label>
+                                                <br />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="address_edit" style="display:flex; justify-content: space-between;">
+                                                <p style="margin:0px 0px 20px 25px">
+                                                    @if (address.Province != null)
+                                                    {
+                                                        @(address.Province.ProvinName)
+                                                    },
+                                                    @if (address.District != null)
+                                                    {
+                                                        @(address.District.DistrictName)
+                                                    },
+                                                    @if (address.Ward != null)
+                                                    {
+                                                        @(address.Ward.WardsName)
+                                                    },
+                                                    @if (address.AddrDetail != null)
+                                                    {
+                                                        @(address.AddrDetail)
+                                                    }
+                                                </p>
+                                                <div class="button_edit" style="margin-right:25px">
+                                                    <a class="button" href="@Url.ActionLink("UpdateAddress", "Address", new { addressId = address.AddressID })">
+                                                        Edit
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>

@@ -1,0 +1,145 @@
+﻿@model Group4_GlassesShop.Models.Cart.Cart
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href="@Url.ActionLink("Index","Home")">Home</a>
+                        <a href="@Url.ActionLink("Shop","Shop")">Shop</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model?._items)
+                            {
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__text">
+                                            <h6>@item.product.ProducctName</h6>
+                                            @foreach (var img in context.Images.Where(i => i.Pid == item.product.Pid && i.ImageUrl.Contains("chinh")).ToList())
+                                            {
+                                                <div class="product__cart__item__pic">
+                                                    <img src="@img.ImageUrl" alt="" style="width: 100px; height: 100px;">
+                                                </div>
+                                            }
+                                        </div>
+                                    </td>                                    
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__text">
+                                            @{
+                                                var color = context.Colors.FirstOrDefault(c => c.ColorId == item.stock.ColorId);
+                                                <h6>@color.ColorName</h6>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="pro-qty-2" style="display:flex; justify-content:space-around; font-size:16px">
+                                                <a href="@Url.Action("ChangeQuantity","Cart")?Pid=@item.product.Pid&quantity=@(item.quantity-1)&colorID=@color.ColorId">
+                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                </a>
+                                                <input type="text" value="@item.quantity">
+                                                <a href="@Url.Action("ChangeQuantity","Cart")?Pid=@item.product.Pid&quantity=@(item.quantity+1)&colorID=@color.ColorId">
+                                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">@(item.product.Price * item.quantity)</td>
+                                    <td class="cart__close"><a href="@Url.Action("RemoveCart","Cart")?Pid=@item.product.Pid&colorID=@color.ColorId"><i class="fa fa-close"></i></a></td>
+                                </tr>
+                            }
+                            @if (Model == null)
+                            {
+                                <h3>Nothing</h3>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="@Url.ActionLink("Shop","Shop")">Continue Shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span>@String.Format("{0:0,00}",Model.ComputeTotalValue())</span></li>
+                        <li>Total <span>@String.Format("{0:0,00}", Model.ComputeTotalValue())</span></li>
+                    </ul>
+                    <a href="./Checkout" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+@section UpdateCart{
+    <script>
+        var qtyBtn = $('.pro-qty-2 .qtybtn');
+        qtyBtn.on('click', function () {
+            var $button = $(this);
+            var input = $button.siblings('input');
+            var oldValue = parseFloat(input.val());
+
+            if ($button.hasClass('inc')) {
+                var newVal = oldValue + 1;
+            } else {
+                // Không cho phép giảm dưới 0
+                var newVal = Math.max(oldValue - 1, 0);
+            }
+
+            input.val(newVal);
+            updateTotalPrice($button.closest('tr'));
+        });
+
+        function updateTotalPrice(row) {
+            var quantity = parseFloat(row.find('input').val());
+            var price = parseFloat(row.find('.product__cart__item__text h5').text());
+            var totalPrice = quantity * price;
+            row.find('.cart__price').text(totalPrice.toFixed(2));
+        }
+
+    </script>
+}
+

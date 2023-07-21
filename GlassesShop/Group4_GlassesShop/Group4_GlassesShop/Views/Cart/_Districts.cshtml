@@ -1,0 +1,8 @@
+﻿@model List<Group4_GlassesShop.Models.DataModel.District>
+<select id="districts" name="SelectedDistrictId" class="custom-select" onchange="loadWards()">
+    <option value="">-- Select District --</option>
+    @foreach (var district in Model)
+    {
+        <option value="@district.DCode">@district.FullNameEn</option>
+    }
+</select>

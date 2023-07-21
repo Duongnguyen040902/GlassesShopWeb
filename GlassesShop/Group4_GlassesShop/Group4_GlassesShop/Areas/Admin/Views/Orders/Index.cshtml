@@ -1,0 +1,230 @@
+﻿@model IPagedList<Group4_GlassesShop.Models.DataModel.Order>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@{
+    ViewData["Title"] = "Order Manager";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+@using Microsoft.AspNetCore.Mvc.Rendering
+@*@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers*@
+
+<h1 style="margin-bottom:20px;">Order Manager</h1>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #e6e6e6;
+        }
+
+    .table {
+        margin-top: 30px;
+    }
+
+    .button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .button {
+        display: inline-block;
+    }
+
+    .button {
+        display: inline-block;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 2px;
+        font-size: 14px;
+    }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .button:active {
+            background-color: #004080;
+        }
+
+    .filter {
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+        transition: box-shadow 0.3s ease;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .form-filterDate {
+        width: 170px;
+        margin-left: 15px;
+        margin-bottom: 16px;
+        display: flex;
+    }
+</style>
+<div>
+    <!-- Filer By Status -->
+    @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+    {
+        <div class="filter_from" style="display:flex">
+            <div class="filter_status">
+                <label for="statusId">Filter by Status:</label>
+                <select name="statusId" id="statusId">
+                    <option value="">All</option>
+                    @foreach (var status in context.Statuses)
+                    {
+                        <option value="@status.StatusId" @(ViewBag.StatusId == status.StatusId ? "selected" : "")>@status.Status1</option>
+                    }
+                </select>
+                <button class="button" type="submit" style="height: 22.75px;">Filter</button>
+            </div>
+            <div class="filter_date" style="display:flex;margin-left: 400px;">
+                <div class="form-filterDate">
+                    <label for="startDate">From:</label>
+                    <input class="filter" type="date" name="startDate" value="@ViewBag.StartDate" style="height:20.8px" />
+                </div>
+                <div class="form-filterDate">
+                    <label for="endDate">To:</label>
+                    <input class="filter" type="date" name="endDate" value="@ViewBag.EndDate" style="height:20.8px" />
+                </div>
+                <button class="button" type="submit" style="height: 22.75px;">Filter</button>
+            </div>
+        </div>
+    }
+
+    <!-- If Order is null => view message No orders found -->
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <p>OrderId</p>
+                    </th>
+                    <th>
+                        <p>Customer Name</p>
+                    </th>
+                    <th>
+                        <p>Order Date</p>
+                    </th>
+                    <th>
+                        <p>Total Price</p>
+                    </th>
+                    <th>
+                        <p>Status</p>
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Customer.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            @if (item.StatusId == 1)
+                            {
+                                <p>@item.Status.Status1</p>
+                            }
+                            else if (item.StatusId == 2)
+                            {
+                                <p>@item.Status.Status1</p>
+
+                            }
+                            else if (item.StatusId == 3)
+                            {
+                                <p>@item.Status.Status1</p>
+                            }
+                            else
+                            {
+                                <p>@item.Status.Status1</p>
+                            }
+                        </td>
+
+
+                        <td>
+                            <a href="@Url.Action("Details", "Orders", new { id = item.OrderId })">Details</a> |
+
+                            @if (item.StatusId == 1)
+                            {
+                                <a href="@Url.Action("Confirm", "Orders", new { id = item.OrderId, statusId = item.StatusId })">Confirm Ship</a>
+                            }
+                            @if (item.StatusId == 2)
+                            {
+                                <a href="@Url.Action("Confirm", "Orders", new { id = item.OrderId, statusId = item.StatusId })">Confirm Complete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Pagging -->
+    @{
+        int totalPages = (int)Math.Ceiling((double)Model.TotalItemCount / Model.PageSize);
+    }
+    <nav aria-label="Page navigation example" style="margin-top:30px">
+        <ul class="pagination justify-content-center">
+           	@if (Model.PageNumber != 1)
+			{
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = 1, ViewBag.StartDate, ViewBag.EndDate, ViewBag.StatusId})">First</a></li>
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, ViewBag.StartDate, ViewBag.EndDate, ViewBag.StatusId })">Previous</a></li>
+			}
+
+			@for (int i = 1; i <= totalPages; i++)
+			{
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i, ViewBag.StartDate, ViewBag.EndDate, ViewBag.StatusId })">@i</a></li>
+			}
+
+			@if (Model.PageNumber != totalPages)
+			{
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, ViewBag.StartDate, ViewBag.EndDate, ViewBag.StatusId })">Next</a></li>
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = totalPages, ViewBag.StartDate, ViewBag.EndDate, ViewBag.StatusId })">Last</a></li>
+			}
+        </ul>
+    </nav>
+    <!-------------------------------------------------------------------------------->
+</div>

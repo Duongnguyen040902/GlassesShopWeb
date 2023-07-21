@@ -1,0 +1,457 @@
+﻿@{
+	Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | @ViewData["Title"]</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../Data/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../Data/css/style.css" type="text/css">
+
+    <!-- Css Login -->
+    @RenderSection("Styles", required: false)
+
+    <style>
+        .header__nav__option {
+            display: flex;
+            align-items: center;
+        }
+
+            .header__nav__option a {
+                margin-right: 5px;
+                text-decoration: none;
+                color: #111111;
+            }
+
+                .header__nav__option a:hover {
+                    color: #e53637;
+                }
+
+        .dropdown-menu {
+            min-width: 150px;
+            padding: 0;
+            margin: 0;
+            border: none;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+            .dropdown-menu li {
+                list-style: none;
+            }
+
+                .dropdown-menu li a {
+                    display: block;
+                    padding: 10px 15px;
+                    color: #000000;
+                    text-decoration: none;
+                    font-size: 12px;
+                }
+
+                    .dropdown-menu li a:hover {
+                        background-color: #000000;
+                        color: #ffffff;
+                    }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        #cartItemCount {
+            background-color: black;
+            color: white;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+    </style>
+	<!-- Chat -->
+	<style>
+		.chat-icon {
+			position: fixed;
+			right: 10px;
+			top: 70%;
+			transform: translateY(-50%);
+			background-color: #f2f2f2;
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			z-index: 9999;
+		}
+
+		.chat-window {
+			position: fixed;
+			right: 0;
+			top: 30%; /* Adjust the top position as desired */
+			bottom: 0;
+			width: 500px; /* Set the width to 500px */
+			background-color: white;
+			border: 15px;
+			padding: 10px;
+			box-sizing: border-box;
+			transition: transform 0.3s ease-in-out;
+			transform: translateX(100%);
+			z-index: 9998;
+		}
+
+			.chat-window.open {
+				transform: translateX(0);
+			}
+	</style>
+
+	<!-- Chat -->
+
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="@Url.ActionLink("Index","Home")"><img src="../Data/img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a href="@Url.ActionLink("Index","Home")">Home</a></li>
+                            <li>
+                                <a href="@Url.ActionLink("Shop","Shop")">Shop</a>
+                                <ul class="dropdown">
+                                    @foreach (var cat in context.Categories.ToList())
+                                    {
+                                        <li><a href="@Url.Action("Shop", "Shop")?CategoryId=@cat.CategoryId">@cat.Cname</a></li>
+                                    }
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Blog","Blog")" class="category-link">Blog</a>
+                                <ul class="dropdown">
+                                    @foreach (var blog in context.CategoryBlogs.ToList())
+                                    {
+                                        <li><a href="#" data-category-id="@blog.CategoryBlogId" class="category-link-blog">@blog.Cname</a></li>
+                                    }
+                                </ul>
+                            </li>
+                            <li><a href="@Url.ActionLink("MyOrderList","OrderHistory")">Order Checking</a></li>
+                           
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        
+                        <a href="@Url.ActionLink("Index","WishList")"><i class="fa fa-heart heart-icon text-dark"></i></a>
+                        <a href="@Url.Action("Cart","Cart")">
+                            <i class="fa fa-shopping-cart cart-icon text-dark"></i>
+                            <span id="cartItemCount">
+                                @{
+                                    if (Context.Session.GetInt32("CartItemCount") != null)
+                                    {
+                                        @Context.Session.GetInt32("CartItemCount")
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw("0")
+                                    }
+                                }
+                            </span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user text-dark"></i>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="@Url.ActionLink("Cart","Cart")">My Cart</a></li>
+                                @{
+                                    string user = Context.Session.GetString("User");
+                                    if (!string.IsNullOrEmpty(user))
+                                    {
+                                        <li><a href="@Url.ActionLink("UserProfile","CustomerProfile")">Profile</a></li>
+                                        <li><a href="@Url.ActionLink("Logout","Login")">Log out</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.ActionLink("Login","Login")">Login</a></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+	<!-- Chat -------------------------------------------------------------------------->
+	<script>
+		
+	</script>
+
+	
+	<div class="chat-icon" onclick="toggleChatWindow()">
+		<img src="../Avatar/Chaticon.png" alt="Chat Icon" width="30px" height="30px">
+	</div>
+	<div id="chatWindow" class="chat-window">
+		<h2>Chat Window</h2>
+		<div id="chatWindowContent">
+		</div>
+	</div>
+
+	<script>
+		function toggleChatWindow() {
+			var chatWindow = document.getElementById("chatWindow");
+			chatWindow.classList.toggle("open");
+
+
+			// Make an AJAX request to the Index action in the controller
+			if (chatWindow.classList.contains("open")) {
+				// Only make the request when the chat window is opened
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", "/ChatUser/Index", true);
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState === 4) {
+						if (xhr.status === 200) {
+							// Handle the successful response
+							var responseHtml = xhr.responseText;
+							// Update the chat window content with the returned HTML
+							document.getElementById("chatWindowContent").innerHTML = responseHtml;
+
+							initializeChatWindowContent();
+						} else {
+							// Handle any error during the request
+							console.error("Error: " + xhr.status);
+						}
+					}
+				};
+				xhr.send();
+			}
+		}
+
+		function initializeChatWindowContent() {
+			const scrollableDiv = document.querySelector('.chat-history');
+			scrollableDiv.scrollTo(0, scrollableDiv.scrollHeight);
+				
+			document.getElementById("submitButton").addEventListener("click", function () {
+				document.getElementById("myForm").submit();
+			});
+			
+			////document.getElementById("submitButton").addEventListener("click", toggleChatWindow);
+			//function sendChat(event) {
+			//	// Get the chat data from the form
+			//	var formData = {
+			//		Text: document.getElementById('Text').value,
+			//		TimeChat: document.getElementById('TimeChat').value,
+			//		ChatId: document.getElementById('ChatId').value,
+			//		Role: document.getElementById('Role').value
+			//	};
+
+			//	// Make an AJAX POST request to the server
+			//	$.ajax({
+			//		url: '@Url.Action("Send", "ChatUser")',
+			//		type: 'POST',
+			//		data: formData,
+			//		success: function (response) {
+			//			// Call your JavaScript function after the action is complete
+			//			toggleChatWindow();
+			//		},
+			//		error: function (error) {
+			//			// Handle the error if needed
+			//			console.log(error);
+			//		}
+			//	});
+			//}
+		}
+		toggleChatWindow();
+	</script>
+
+	<!-- Chat --------------------------------------------------------------------------------------->
+    @RenderBody()
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="../Data/img/footer-logo.png" alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="../Data/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>
+                            Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                                                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form" action="@Url.Action("Shop", "Shop")" >
+                <input type="text" name="Search" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+    <!-- ../Data/../Data/js/ Plugins -->
+    <script src="../Data/js/jquery-3.3.1.min.js"></script>
+    <script src="../Data/js/bootstrap.min.js"></script>
+@*    <script src="../Data/js/jquery.nice-select.min.js"></script>*@
+    <script src="../Data/js/jquery.nicescroll.min.js"></script>
+    <script src="../Data/js/jquery.magnific-popup.min.js"></script>
+    <script src="../Data/js/jquery.countdown.min.js"></script>
+    <script src="../Data/js/jquery.slicknav.js"></script>
+    <script src="../Data/js/mixitup.min.js"></script>
+    <script src="../Data/js/owl.carousel.min.js"></script>
+    <script src="~/Data/js//main.js"></script>
+    
+    @RenderSection("Login",required:false)
+    @RenderSection("Setimeout",required:false)
+    @RenderSection("Category",required:false)
+    @RenderSection("Details",required:false)
+    @RenderSection("ProductDetails",required:false)
+    @RenderSection("Blog",required:false)
+    @RenderSection("BlogShareScript",required:false)
+    @RenderSection("UpdateCart",required:false)
+    @RenderSection("btnQuantity",required:false)
+    @RenderSection("Sort",required:false)
+    @RenderSection("Search",required:false)
+    @RenderSection("Address",required:false)
+    @RenderSection("Color",required:false)
+    @RenderSection("OtherAddress",required:false)
+    @RenderSection("AddAddress",required:false)
+    @RenderSection("scripts",required:false)
+    
+
+</body>
+
+</html>
+@section BlogShareScript{
+    <script>
+        $(document).ready(function () {
+            $('.category-link-blog').click(function (e) {
+                e.preventDefault();
+                var CategoryBlogId = $(this).data('category-id');
+                loadBlogsByCategory(CategoryBlogId);
+            });
+        });
+
+        function loadBlogsByCategory(CategoryBlogId) {
+            $.ajax({
+                url: '@Url.Action("GetBlogsByCategory", "Blog")',
+                type: 'GET',
+                data: { CategoryBlogId: CategoryBlogId },
+                success: function (result) {
+                    updateBlogList(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function updateBlogList(data) {
+            var blogContainer = $('#blog-container');
+            blogContainer.empty(); // Xóa các blog hiện có
+
+            blogContainer.html(data); // Thay đổi nội dung của blogContainer bằng PartialView trả về từ controller
+        }
+    </script>
+}

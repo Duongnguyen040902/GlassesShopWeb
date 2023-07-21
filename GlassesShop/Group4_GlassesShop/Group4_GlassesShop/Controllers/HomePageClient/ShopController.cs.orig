@@ -1,0 +1,55 @@
+﻿using Group4_GlassesShop.Models.DataModel;
+using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Mvc.Core;
+using X.PagedList;
+//using Group4_GlassesShop.Models.ManagerProduct;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+
+namespace Group4_GlassesShop.Controllers.HomePageClient
+{
+    public class ShopController : Controller
+    {
+        GlassesShopContext context = new GlassesShopContext();
+        /// <summary>
+        /// Shop All 
+        /// Use Library X.PagedList
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Shop(int ? page)
+        {
+            int pageSize = 12;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var GetAllProduct = context.Products.ToList();
+            var ListCat = context.Categories.ToList();
+            var ListBrand = context.Brands.ToList();
+            PagedList<Product> listPage = new PagedList<Product>(GetAllProduct, pageNumber,pageSize);
+            var viewModel = new ListManager
+            {
+                Products = GetAllProduct,
+                Categories = ListCat,
+                Brand = ListBrand ,
+                PageList = listPage
+            };
+            return View(viewModel);
+        }
+
+        public ActionResult GetProductsByCategory(int categoryId)
+        {
+            var products = context.Products.Where(p => p.CategoryId == categoryId).ToList();
+            return Json(products);
+        }
+
+        /*
+         * Product Details
+         * 
+         * 
+         */
+
+        public ActionResult GetProductByPid(int pid)
+        {
+            var ProductById = context.Products.FirstOrDefault(p => p.Pid == pid);
+            return View(ProductById);
+        }
+    }
+}

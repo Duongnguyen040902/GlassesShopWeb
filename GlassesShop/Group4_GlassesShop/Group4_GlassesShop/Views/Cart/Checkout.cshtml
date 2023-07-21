@@ -1,0 +1,254 @@
+﻿@model Group4_GlassesShop.Models.Cart.CheckoutModel
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+    decimal total = 0;
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Check Out</h4>
+                    <div class="breadcrumb__links">
+                        <a href="./index.html">Home</a>
+                        <a href="./shop.html">Shop</a>
+                        <span>Check Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+<!-- Breadcrumb Section End -->
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form action="Checkout" method="post">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <h6 class="coupon__code">
+                            <span class="icon_tag_alt"></span> Have a coupon? <a href="#">
+                                Click
+                                here
+                            </a> to enter your code
+                        </h6>
+                        <h6 class="checkout__title">Billing Details</h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Full Name<span>*</span></p>
+                                    <input type="text" value="@Model.Customer.Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Phone<span>*</span></p>
+                                    <input type="text" value="@Model.Customer.PhoneNumber">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Address<span>*</span></p>
+                            <div class="checkout__input__checkbox">
+                                @foreach (var address in context.Addresses.Where(d => d.CustomerId == Model.Customer.CustomerId).ToList())
+                                {
+                                    <label for="address-@address.AddressId">
+                                        @address.AddDetails
+                                        <input type="radio" id="address-@address.AddressId" name="addressMain" checked value="@address.AddressId">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                }
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label for="address-other">
+                                    Other Address
+                                    <input type="radio" id="address-other" name="addressMain" value="other">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="new-address-form" style="display: none;">
+                                <form id="address-form">
+                                    <div class="checkout__input">
+                                        <p class="input-label">Province<span>*</span></p>
+                                        <select id="provinces" name="SelectedProvinceId" class="custom-select" onchange="loadDistricts()">
+                                            <option value="">-- Select Province --</option>
+                                            @foreach (var province in Model.Address.Provinces)
+                                            {
+                                                <option value="@province.PCode">@province.NameEn</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <br>
+                                    <div class="checkout__input">
+                                        <p class="input-label">Districts<span>*</span></p>
+                                        <div id="districtContainer">
+                                            @Html.Partial("_Districts", new List<Group4_GlassesShop.Models.DataModel.District>())
+                                        </div>
+                                    </div>
+                                    <div class="checkout__input">
+                                        <p class="input-label">Wards<span>*</span></p>
+                                        <div id="wardsContainer">
+                                            @Html.Partial("_Ward", new List<Group4_GlassesShop.Models.DataModel.Ward>())
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="checkout__input">
+                                                <p>Address Details<span>*</span></p>
+                                                <textarea id="address-details" name="addressDetails" style="width: 200%"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="continue__btn">
+                                    <a href="@Url.ActionLink("Shop","Shop")">Continue Shopping</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4 class="order__title">Your order</h4>
+                            <div class="checkout__order__products">Product <span>Total</span></div>
+                            <ul class="checkout__total__products">
+                                @foreach (var item in Model.Carts?._items)
+                                {
+                                    int i = 1;
+                                    var color = context.Colors.FirstOrDefault(c => c.ColorId == item.stock.ColorId);
+                                    <li>@i. @item.product.ProducctName x @item.quantity (@color.ColorName) <span> $ @String.Format("{0:0,00}", item.product.Price * item.quantity)</span></li>
+                                    i++;
+                                    total = total + (item.product.Price * item.quantity);
+                                }
+                                @if (Model == null)
+                                {
+                                    <h3>Nothing</h3>
+                                }
+
+                            </ul>
+                            <ul class="checkout__total__all">
+                                <li>Subtotal <span>$@total</span></li>
+                                <li>Total <span>$@total</span></li>
+                            </ul>
+                            <div class="checkout__input__checkbox">
+                                <label for="payment1">
+                                    Check Payment
+                                    <input type="radio" id="payment1" name="payment" checked>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label for="payment2">
+                                    Payment on Delivery
+                                    <input type="radio" id="payment2" name="payment">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <button type="submit" class="site-btn">PLACE ORDER</button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+@section AddAddress{
+    <script>
+        function submitForm() {
+            // Lấy giá trị các trường dữ liệu địa chỉ
+            var provinceId = document.getElementById("provinces").value;
+            var districtId = document.getElementById("districts").value;
+            var wardId = document.getElementById("wards").value;
+            var addressDetails = document.getElementById("address-details").value;
+
+            // Gán giá trị vào các input trong form
+            document.getElementById("address-form").elements.namedItem("SelectedProvinceId").value = provinceId;
+            document.getElementById("address-form").elements.namedItem("SelectedDistrictId").value = districtId;
+            document.getElementById("address-form").elements.namedItem("SelectedWardId").value = wardId;
+            document.getElementById("address-form").elements.namedItem("addressDetails").value = addressDetails;
+
+            // Submit form
+            document.getElementById("address-form").submit();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var addressCheckbox = document.getElementById('address-other');
+            var newAddressForm = document.getElementById('new-address-form');
+
+            var addressMainCheckbox = document.getElementById('address1');
+            var addressOtherCheckbox = document.getElementById('address2');
+
+            addressCheckbox.addEventListener('change', function () {
+                if (addressCheckbox.checked) {
+                    newAddressForm.style.display = 'block';
+                } else {
+                    newAddressForm.style.display = 'none';
+                }
+            });
+
+            addressMainCheckbox.addEventListener('change', function () {
+                if (addressMainCheckbox.checked) {
+                    newAddressForm.style.display = 'none';
+                }
+            });
+
+            addressOtherCheckbox.addEventListener('change', function () {
+                if (addressOtherCheckbox.checked) {
+                    newAddressForm.style.display = 'block';
+                }
+            });
+        });
+    </script>
+}
+
+@section OtherAddress {
+    <script>
+        function loadDistricts() {
+            var selectedProvinceId = document.getElementById("provinces").value;
+
+            // Gửi yêu cầu AJAX đến action trong Controller để lấy PartialView danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
+            var url = '/Cart/GetDistricts?provinceCode=' + selectedProvinceId;
+
+            // Sử dụng jQuery để tải PartialView và cập nhật phần tử select của quận/huyện
+            $.get(url, function (data) {
+                $("#districtContainer").html(data);
+            });
+        }
+        function loadWards() {
+            var districtSelect = document.getElementById("districts");
+            var wardsSelect = document.getElementById("wards");
+
+            var selectedDistrictId = districtSelect.value;
+
+            // Xóa tất cả các tùy chọn hiện có trong phần tử select của quận/huyện
+            wardsSelect.innerHTML = "";
+
+            // Kiểm tra nếu tỉnh/thành phố đã được chọn
+            if (selectedDistrictId !== "") {
+                // Gửi yêu cầu AJAX đến action trong Controller để lấy PartialView danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
+                var url = '/Cart/GetWards?districtId=' + selectedDistrictId;
+
+                // Sử dụng jQuery để tải PartialView và cập nhật phần tử select của quận/huyện
+                $.get(url, function (data) {
+                    $("#wardsContainer").html(data);
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,413 @@
+﻿@model Group4_GlassesShop.Models.DataModel.Feedback;
+@{
+    ViewData["Title"] = "UserOrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext glShop = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+    var productId = ViewData["productId"];
+    var errorMessage = ViewData["errorMessage"];
+    var message = ViewData["message"];
+    var orderId = ViewData["orderId"];
+}
+<head>
+    <style>
+        .nav-borders .nav-link.active {
+            color: #0061f2;
+            border-bottom-color: #0061f2;
+        }
+
+        .nav-borders .nav-link {
+            margin-bottom: 25px;
+            color: #69707a;
+            border-bottom-width: 0.125rem;
+            border-bottom-style: solid;
+            border-bottom-color: transparent;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        body {
+            margin-top: 20px;
+        }
+
+        .steps .step {
+            display: block;
+            width: 100%;
+            margin-bottom: 35px;
+            text-align: center
+        }
+
+            .steps .step .step-icon-wrap {
+                display: block;
+                position: relative;
+                width: 100%;
+                height: 80px;
+                text-align: center
+            }
+
+                .steps .step .step-icon-wrap::before,
+                .steps .step .step-icon-wrap::after {
+                    display: block;
+                    position: absolute;
+                    top: 50%;
+                    width: 50%;
+                    height: 3px;
+                    margin-top: -1px;
+                    background-color: #e1e7ec;
+                    content: '';
+                    z-index: 1
+                }
+
+                .steps .step .step-icon-wrap::before {
+                    left: 0
+                }
+
+                .steps .step .step-icon-wrap::after {
+                    right: 0
+                }
+
+            .steps .step .step-icon {
+                display: inline-block;
+                position: relative;
+                width: 80px;
+                height: 80px;
+                border: 1px solid #e1e7ec;
+                border-radius: 50%;
+                background-color: #f5f5f5;
+                color: #374250;
+                font-size: 38px;
+                line-height: 81px;
+                z-index: 5
+            }
+
+            .steps .step .step-title {
+                margin-top: 16px;
+                margin-bottom: 0;
+                color: #606975;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .steps .step:first-child .step-icon-wrap::before {
+                display: none
+            }
+
+            .steps .step:last-child .step-icon-wrap::after {
+                display: none
+            }
+
+            .steps .step.completed .step-icon-wrap::before,
+            .steps .step.completed .step-icon-wrap::after {
+                background-color: lawngreen;
+            }
+
+            .steps .step.completed .step-icon {
+                border-color: lawngreen;
+                background-color: lawngreen;
+                color: #fff
+            }
+
+        .bg-faded, .bg-secondary {
+            background-color: #f5f5f5 !important;
+        }
+
+        .back-link {
+            margin-left: 16px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f1f1f1;
+            color: #333;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+            .back-link:hover {
+                background-color: #e1e1e1;
+            }
+
+        .order-actions {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .buy-again {
+            font-size: 14px;
+            display: inline-block;
+            outline: 0;
+            border: 0;
+            cursor: pointer;
+            will-change: box-shadow,transform;
+            background: radial-gradient( 100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100% );
+            box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+            padding: 0 1.5em;
+            border-radius: 0.3em;
+            color: #fff;
+            height: 2.6em;
+            text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+            float: right;
+        }
+
+            .buy-again :hover {
+                box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
+                transform: translateY(-0.1em);
+            }
+
+            .buy-again :active {
+                box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
+                transform: translateY(0em);
+            }
+
+        .product-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 20px;
+        }
+
+            .product-image img {
+                max-width: 100px;
+                height: auto;
+            }
+
+        .product-description {
+            flex: 1;
+        }
+
+        .product-name {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .product-variant {
+            margin: 0;
+        }
+
+        .product-price {
+            margin: 0;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .total-price {
+            color: orangered;
+        }
+
+        .Btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(-50deg,rgb(39, 107, 255),rgb(112, 186, 255),rgb(39, 107, 255));
+            background-size: 250%;
+            background-position: left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition-duration: .5s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
+        }
+
+        .logoIcon {
+            fill: white;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -20px;
+            opacity: 0;
+            background: linear-gradient(to right,rgb(39, 107, 255),rgb(108, 184, 255));
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition-duration: .2s;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+
+            .tooltip::before {
+                position: absolute;
+                content: "";
+                width: 10px;
+                height: 10px;
+                background: linear-gradient(45deg,rgb(39, 107, 255),rgb(108, 184, 255));
+                background-size: 1000%;
+                background-position: center;
+                transform: rotate(45deg);
+                bottom: -15%;
+                transition-duration: .3s;
+            }
+
+        .Btn:hover .tooltip {
+            top: -50px;
+            opacity: 1;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover {
+            background-position: right;
+            transition-duration: .5s;
+        }
+
+        .delivery-address {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+            .delivery-address h4 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .delivery-address p {
+                margin: 5px 0;
+            }
+
+        .card-body h4 {
+            text-align: center;
+        }
+
+        .chatBtn {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: none;
+            background-color: linear-gradient(to right,rgb(39, 107, 255),rgb(108, 184, 255));
+            background-image: linear-gradient(-50deg,rgb(39, 107, 255),rgb(112, 186, 255),rgb(39, 107, 255));
+            cursor: pointer;
+            padding-top: 3px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.164);
+            position: relative;
+            background-size: 300%;
+            background-position: left;
+            transition-duration: 1s;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -40px;
+            opacity: 0;
+            background-color: rgb(255, 180, 82);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition-duration: .5s;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+
+        .chatBtn:hover .tooltip {
+            opacity: 1;
+            transition-duration: .5s;
+        }
+
+        .chatBtn:hover {
+            background-position: right;
+            transition-duration: 1s;
+        }
+
+        .delivery-shop h4 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<div class="container-xl px-4 mt-4">
+    <div class="page-content">
+        <div class="container-fluid">
+            <nav class="nav nav-borders">
+                <a class="nav-link ms-0" href="@Url.ActionLink("UserProfile","ViewProfile")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My Profile</a>
+                <a class="nav-link active" href="@Url.ActionLink("MyOrderList","MyOrderList")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My order</a>
+                <a class="nav-link" href="@Url.ActionLink("AddressView","ViewAddress")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Address</a>
+                <a class="nav-link" href="@Url.ActionLink("SendCode","ChangePassword")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Change password</a>
+            </nav>
+            <a href="@Url.Action("OrderDetail", "OrderHistory", new { orderId = orderId })" class="back-link">
+                Back
+            </a>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h3>Create Feedback</h3>
+                        </div>
+                        @if (message != null)
+                        {
+                            <div class="alert alert-success">
+                                @message
+                            </div>
+                        }
+
+                        @if (errorMessage != null)
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+
+                        @using (Html.BeginForm("pushFeedback", "Feedback", FormMethod.Post))
+                        {
+                            <form>
+                                @Html.Hidden("productId", productId)
+
+                                @Html.Hidden("orderId", orderId)
+                                <div class="form-group first">
+                                    <div>
+                                        Content
+                                    </div>
+                                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control", placeholder = "Your feedback" ,  required = "required" })
+                                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group first">
+                                    <div>
+                                        Rating
+                                    </div>
+                                    @Html.DropDownListFor(model => model.Rating, new SelectList(new List<int> { 1, 2, 3, 4, 5 }), new { @class = "form-control", placeholder = "Your feedback" })
+
+                                    @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group last mb-4">
+                                    <input type="submit" value="Create" class="btn btn-block btn-primary">
+                                </div>
+                            </form>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

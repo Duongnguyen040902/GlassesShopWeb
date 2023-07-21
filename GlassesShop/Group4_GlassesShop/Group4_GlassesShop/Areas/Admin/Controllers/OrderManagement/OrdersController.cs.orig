@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Group4_GlassesShop.Models.DataModel;
+
+namespace Group4_GlassesShop.Controllers
+{
+    [Area("admin")]
+    [Route("admin")]
+    [Route("admin/Orders")]
+    public class OrdersController : Controller
+    {
+
+        private readonly GlassesShopContext _context;
+
+        public OrdersController(GlassesShopContext context)
+        {
+            _context = context;
+        }
+        [Route("")]
+        [Route("Index")]
+        // GET: Orders
+        public async Task<IActionResult> Index()
+        {
+            var glassesShopContext = _context.Orders.Include(o => o.Customer);
+            return View(await glassesShopContext.ToListAsync());
+        }
+
+        [Route("Details")]
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                .Include(o => o.Address) // Include order details
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+
+            //moi order detail la 1 sanpham: quantity price
+            var orderdetails = await _context.OrderDetails.Where(m => m.OrderId == id).ToListAsync();
+            ViewData["orderDetail"] = orderdetails;
+
+            //get stock: name color 
+            List<Group4_GlassesShop.Models.DataModel.Stock> stok = new List<Group4_GlassesShop.Models.DataModel.Stock>(); ;
+            foreach (var o in orderdetails)
+            {
+                var stock = await _context.Stocks.Include(s => s.Color).Include(s => s.Product)
+                .FirstOrDefaultAsync(s => s.StockId == o.StockId);
+                stok.Add(stock);
+            }
+
+            ViewData["stock"] = stok;
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
+
+
+        [Route("")]
+        [Route("Confirm")]
+
+        public async Task<IActionResult> Confirm(int id)
+        {
+            var Orderselect = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == id);
+            if (Orderselect != null && Orderselect.StatusId == 2)
+            {
+                Orderselect.StatusId = 3;
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+
+
+
+        private bool OrderExists(int id)
+        {
+            return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
+        }
+    }
+}

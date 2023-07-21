@@ -1,0 +1,41 @@
+﻿@{
+	ViewData["Title"] = "Accounts Manager";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@model Group4_GlassesShop.Models.DataModel.Account
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>Edit Account</h1>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="AccountId" />
+			<div class="form-group">
+				<label asp-for="Email" class="control-label"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Role" class="control-label"></label>
+				<input asp-for="Role" class="form-control" />
+				<span asp-validation-for="Role" class="text-danger"></span>
+			</div>
+			<div class="form-group form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+				</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,217 @@
+﻿@model Group4_GlassesShop.Models.DataModel.Product
+@{
+	ViewData["Title"] = "Create";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Group4_GlassesShop.Models.DataModel
+
+<h1>Create</h1>
+<h4>Product</h4>
+<hr />
+
+<script>
+	function handleFileSelect(event, index) {
+		var input = event.target;
+		var file = input.files[0];
+
+		// Check if the file name contains a space
+		if (file && file.name.includes(' ')) {
+			alert('Please select a file without spaces in the name.');
+			input.value = null; // Clear the selected file
+		} else {
+			// File is valid, proceed with further processing
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				var path = e.target.result;
+				document.getElementById('img-display-' + index).src = path;
+				document.getElementById('img-display-text-' + index).textContent = path;
+				document.getElementById('image-path-' + index).value = path;
+			};
+
+			reader.readAsDataURL(file);
+		}
+	}
+</script>
+<form asp-action="Create">
+	<div class="row">
+
+		<div class="col-md-6">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="ProducctName" class="control-label"></label>
+				<input asp-for="ProducctName" class="form-control" />
+				<span asp-validation-for="ProducctName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Price" class="control-label"></label>
+				<input asp-for="Price" class="form-control" min="0" />
+				<span asp-validation-for="Price" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<textarea asp-for="Description" class="form-control" style="height: 350px"></textarea>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="CategoryId" class="control-label"></label>
+				<select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="BrandId" class="control-label"></label>
+				<select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="TypeId" class="control-label"></label>
+				<select asp-for="TypeId" class="form-control" asp-items="ViewBag.TypeId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="ShapeId" class="control-label"></label>
+				<select asp-for="ShapeId" class="form-control" asp-items="ViewBag.ShapeId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="FeatureId" class="control-label"></label>
+				<select asp-for="FeatureId" class="form-control" asp-items="ViewBag.FeatureId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="Created" class="control-label"></label>
+				<input type="hidden" asp-for=" Created" class="form-control" value="@DateTime.Now" />
+				<span asp-validation-for="Created" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Updated" class="control-label"></label>
+				<input type="hidden" asp-for="Updated" class="form-control" value="@DateTime.Now" />
+				<span asp-validation-for="Updated" class="text-danger"></span>
+			</div>
+			<div class="form-group form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" asp-for="BestSeller" /> @Html.DisplayNameFor(model => model.BestSeller)
+				</label>
+			</div>
+
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+
+		</div>
+		<div class="col-md-6">
+			<h4 style="color:red">@ViewData["error image"]</h4>
+			<h5>Image</h5>
+			<ul>
+				@for (int i = 0; i < 4; i++)
+				{
+					<li>
+						@*<p id="img-display-text-@i"></p>*@
+						<input type="file" accept="image/*" id="image-path-@i" name="images[@i].ImageUrl" onchange="handleFileSelect(event, @i)">
+						<img style="height:300px;width:auto" src="x" id="img-display-@i"><br>
+						<input type="hidden" name="images[@i].ImageId" value="0" />
+						<input type="hidden" name="images[@i].Pid" value="0" />
+					</li>
+				}
+			</ul>
+		</div>
+		@*<div class="col-md-5">
+			<h3>Add Stock</h3>
+
+			<table id="myTable">
+				<thead>
+					<tr>
+						<th style="width: 1000px;">Color Name</th>
+						<th>Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					@{
+						var ListColor = ((List<Group4_GlassesShop.Models.DataModel.Color>)ViewData["colors"]);
+					}
+					@if (ListColor != null)
+					{
+						@for (int i = 0; i < ListColor.Count; i++)
+						{
+							var colorss = ListColor[i];
+							<tr>
+								<td style="width: 1000px;">
+
+									<input type="checkbox" id="stocks[@i].ColorId" name="stocks[@i].ColorId" class="form-control" value="@colorss.ColorId" onchange="handleCheckboxChange(this, @i)">
+									<label for="stocks[@i].ColorId">@colorss.ColorName</label>
+									<input type="hidden" name="stocks[@i].StockId" value="0" disabled />
+									<input type="hidden" name="stocks[@i].ProductId" value="0" disabled />
+								</td>
+								<td>
+									<input type="number" min="0" name="stocks[@i].Quantity" value="0" placeholder="Quantity" class="hidden" disabled />
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+			
+			<br />
+			<a onclick="addNewRow()"><b>New Color</b></a>
+
+		</div>*@
+
+	</div>
+</form>
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+
+
+@*click add corlor*@
+@*<script>
+	function handleCheckboxChange(checkbox, index) {
+		var colorIdInput = document.getElementsByName('stocks[' + index + '].StockId')[0];
+		var pidInput = document.getElementsByName('stocks[' + index + '].ProductId')[0];
+		var quantityInput = document.getElementsByName('stocks[' + index + '].Quantity')[0];
+
+		if (!checkbox.checked) {
+			colorIdInput.disabled = true;
+			pidInput.disabled = true;
+			quantityInput.disabled = true;
+		} else {
+			colorIdInput.disabled = false;
+			pidInput.disabled = false;
+			quantityInput.disabled = false;
+		}
+	}
+</script>*@
+
+@*add stock*@
+@*<script>
+	function addNewRow() {
+		var table = document.getElementById("myTable");
+		var newRow = table.insertRow(table.rows.length);
+		var length = table.rows.length - 1;
+		var cell1 = newRow.insertCell(0);
+		var cell2 = newRow.insertCell(1);
+		cell1.innerHTML = 
+			'<input type="hidden" name="stocks[' + length + '].StockId" value="0"  />' +
+			'<input type = "text" name = "colorname" placeholder="new color"  /> ' +
+			'<input type = "hidden" name = "stocks[' + length + '].ProductId" value = "0"  /> ' +
+			'<input type = "hidden" name = "stocks[' + length + '].ColorId" value = "9999"  /> ';
+		cell2.innerHTML = '<input min="0" type = "number" name = "stocks[' + length + '].Quantity" value="0" /> ';
+	}
+</script>*@
+
+
+@*<script>
+	function handleFileSelect(event) {
+		var input = event.target;
+		var file = input.files[0];
+
+		// Check if the file name contains a backspace
+		if (file && file.name.includes(' ')) {
+			alert('Please select a file without spaces in the name.');
+			input.value = null; // Clear the selected file
+		} else {
+			// File is valid, proceed with further processing
+			var path = URL.createObjectURL(file);
+			document.getElementById('image-path').value = path;
+		}
+	}
+</script>*@

@@ -1,0 +1,103 @@
+﻿@model IPagedList<Group4_GlassesShop.Models.DataModel.Order>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Order Manager";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+
+<!-- If Order is null => view message No orders found -->
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p>OrderId</p>
+                </th>
+                <th>
+                    <p>Customer Name</p>
+                </th>
+                <th>
+                    <p>Order Date</p>
+                </th>
+                <th>
+                    <p>Total Price</p>
+                </th>
+                <th>
+                    <p>Status</p>
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                    <td>
+                        @if (item.StatusId == 1)
+                        {
+                            <p>@item.Status.Status1</p>
+                        }
+                        else if (item.StatusId == 2)
+                        {
+                            <p>@item.Status.Status1</p>
+
+                        }
+                        else if (item.StatusId == 3)
+                        {
+                            <p>@item.Status.Status1</p>
+                        }
+                        else if (item.StatusId == 4)
+                        {
+                            <p>@item.Status.Status1</p>
+                        }
+                    </td>
+
+
+                    <td>
+                        <a href="@Url.Action("Details", "Orders", new { id = item.OrderId })">Details</a> |
+
+                        @if (item.StatusId == 1)
+                        {
+                            <a href="@Url.Action("Confirm", "Orders", new { id = item.OrderId, statusId = item.StatusId })">Confirm Ship</a>
+                        }
+                        @if (item.StatusId == 2)
+                        {
+                            <a href="@Url.Action("Confirm", "Orders", new { id = item.OrderId, statusId = item.StatusId })">Confirm Complete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Display pagination links here -->
+<div class="pagination">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, statusId = ViewBag.StatusId, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }))
+</div>
+
+}

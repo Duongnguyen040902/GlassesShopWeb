@@ -1,0 +1,303 @@
+@model Group4_GlassesShop.Areas.Admin.Models.ReportDetail
+@{
+	ViewData["Title"] = "Dashboard";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+@section cssBarChart{
+	<link href="layoutadmin\css\style.css" rel="stylesheet" />
+}
+<style>
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+		table th,
+		table td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ccc;
+		}
+
+		table th {
+			background-color: #f2f2f2;
+		}
+
+		table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		table tr:hover {
+			background-color: #e6e6e6;
+		}
+
+	/*BAR CHART CSS*/
+	body {
+		background-color: #f9f9fa
+	}
+
+	.flex {
+		-webkit-box-flex: 1;
+		-ms-flex: 1 1 auto;
+		flex: 1 1 auto
+	}
+
+	.padding {
+		padding: 5rem
+	}
+
+	.card {
+		background: #fff;
+		border-width: 0;
+		border-radius: .25rem;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+		margin-bottom: 1.5rem
+	}
+
+	.card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		word-wrap: break-word;
+		background-color: #fff;
+		background-clip: border-box;
+		border: 1px solid rgba(19, 24, 44, .125);
+		border-radius: .25rem
+	}
+
+	.card-header {
+		padding: .75rem 1.25rem;
+		margin-bottom: 0;
+		background-color: rgba(19, 24, 44, .03);
+		border-bottom: 1px solid rgba(19, 24, 44, .125)
+	}
+
+		.card-header:first-child {
+			border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+		}
+
+	card-footer,
+	.card-header {
+		background-color: transparent;
+		border-color: rgba(160, 175, 185, .15);
+		background-clip: padding-box
+	}
+	/*BAR CHART CSS*/
+
+</style>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="my-form-wrapper">
+				<form id="reportForm" method="post" action="@Url.Action("Dashboard", "AdminDashboard")">
+					<div class="form-row">
+						<div class="form-group col-sm-6 col-md-4">
+							<label for="input_from">From</label>
+							<input type="date" class="form-control rounded" id="input_from" name="fromDate" value="">
+						</div>
+						<div class="form-group col-sm-6 col-md-4">
+							<label for="input_to">To</label>
+							<input type="date" class="form-control rounded" id="input_to" name="toDate" value="">
+						</div>
+						<div class="col-sm-12 col-md-4">
+							<button type="submit" class="btn btn-primary" style="margin-top: 32px;">Filter</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div style="transform: scale(0.9); transform-origin: top left;">
+	<!-- MAIN CONTENT-->
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="overview-wrap">
+				<h2 class="title-1">overview</h2>
+			</div>
+		</div>
+	</div>
+	<!-- box -->
+	<div class="row m-t-25">
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c1">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-account-o"></i>
+						</div>
+						<div class="text">
+							<h2 id="totalOrderInPro">@Model.ReportOrder.TotalOrderInPro</h2>
+							<span>Order in progress</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart1"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c2">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-shopping-cart"></i>
+						</div>
+						<div class="text">
+							<h2 id="totalOrders">@Model.ReportOrder.TotalOrders</h2>
+							<span>Total Orders</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart2"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c3">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-calendar-note"></i>
+						</div>
+						<div class="text">
+							<h2 id="soldOutProducts">@Model.ReportOrder.SoldOutProducts</h2>
+							<span>Sold</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart3"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c4">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-calendar-note"></i>
+						</div>
+						<div class="text">
+							<h2 id="totalRevenue" style="font-size: 20px; font-weight: bold; margin-bottom: 5px;">@String.Format("{0:0,00}", @Model.ReportOrder.totalRevenue)</h2>
+							<span>Total Earnings</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart3"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="main-wrapper">
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-12">
+					<div class="row">
+						<div class="col-lg-6 col-sm-6">
+							<div class="card" style="width:900px">
+								<div class="card-header">
+									<h4 class="card-title">Report Cost</h4>
+								</div>
+								<div class="card-body">
+									<canvas id="barChart_1"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@section ScriptBarchart {
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const barChart_1 = document.getElementById("barChart_1").getContext('2d');
+			barChart_1.height = 100;
+
+			// Dữ liệu doanh thu theo tháng từ phía máy chủ
+			const revenueByMonth = @Html.Raw(Json.Serialize(Model.ReportOrder.RevenueByMonth));
+
+			new Chart(barChart_1, {
+				type: 'bar',
+				data: {
+					defaultFontFamily: 'Poppins',
+					labels: Object.keys(revenueByMonth),
+					datasets: [{
+						label: "Monthly Revenue",
+						data: Object.values(revenueByMonth),
+						borderColor: 'rgba(26, 51, 213, 1)',
+						borderWidth: "0",
+						backgroundColor: 'rgba(26, 51, 213, 1)'
+					}]
+				},
+				options: {
+					legend: false,
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: true
+							}
+						}],
+						xAxes: [{
+							barPercentage: 0.5
+						}]
+					}
+				}
+			});
+		});
+	</script>
+}
+
+
+@section ReportCost{
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var reportForm = document.querySelector('#reportForm');
+			var reportTypeSelect = document.querySelector('#reportType');
+
+			// Lắng nghe sự kiện submit của form
+			reportForm.addEventListener('submit', function (event) {
+				event.preventDefault(); // Ngăn chặn submit mặc định
+
+				// Lấy giá trị từ trường select
+				var fromDate = document.querySelector('#input_from').value;
+				var toDate = document.querySelector('#input_to').value;
+
+				// Gán giá trị cho các trường input hidden
+				var fromDateInput = document.createElement('input');
+				fromDateInput.setAttribute('type', 'hidden');
+				fromDateInput.setAttribute('name', 'fromDate');
+				fromDateInput.setAttribute('value', fromDate);
+				reportForm.appendChild(fromDateInput);
+
+				var toDateInput = document.createElement('input');
+				toDateInput.setAttribute('type', 'hidden');
+				toDateInput.setAttribute('name', 'toDate');
+				toDateInput.setAttribute('value', toDate);
+				reportForm.appendChild(toDateInput);
+
+				// Submit form
+				reportForm.submit();
+			});
+		});
+	</script>
+}
+
+
+
+

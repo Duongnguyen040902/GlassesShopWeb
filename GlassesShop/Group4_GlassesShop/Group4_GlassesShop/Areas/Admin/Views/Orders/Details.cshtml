@@ -1,0 +1,125 @@
+﻿@model Group4_GlassesShop.Models.DataModel.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #e6e6e6;
+        }
+
+</style>
+<h1>Order Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusId)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.StatusId == 1)
+            {
+                <p>@Model.Status.Status1</p>
+            }
+            else if (Model.StatusId == 2)
+            {
+                <p>@Model.Status.Status1</p>
+
+            }
+            else if (Model.StatusId == 3)
+            {
+                <p>@Model.Status.Status1</p>
+            }
+            else
+            {
+                <p>@Model.Status.Status1</p>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+        @{
+            
+            var orderDetails = (List<Group4_GlassesShop.Models.DataModel.OrderDetail>)ViewData["orderDetail"];
+            var stocks = (List<Group4_GlassesShop.Models.DataModel.Stock>)ViewData["stock"];
+        }
+        <dt class="col-sm-2">Detail</dt>
+        <dd class="col-sm-10">
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+
+                </tr>
+
+                @for (int i = 0; i < orderDetails.Count; i++)
+                {
+                    var stock = stocks[i];
+                    var orderDetail = orderDetails[i];
+
+                    <tr>
+                        <td>@stock.Product.ProducctName</td>
+                        <td>@stock.Color.ColorName</td>
+                        <td>@orderDetail.Quantity</td>
+                        <td>@stock.Product.Price</td>
+
+                    </tr>
+                }
+
+            </table>
+        </dd>
+
+        <dt class="col-sm-2">
+            FullAddress
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Address.AddDetails
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

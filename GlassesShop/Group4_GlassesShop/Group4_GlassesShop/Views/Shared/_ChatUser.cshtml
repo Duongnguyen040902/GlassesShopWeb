@@ -1,0 +1,76 @@
+﻿@*@model List<Group4_GlassesShop.Models.DataModel.ChatDetail>
+*@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../LayoutAdmin/css/chat.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<!-- Partial View -->
+
+<div class="chat" style="height:590px;overflow: hidden; ">
+
+	<div class="chat-history" style="width: 100%;height: 70%;overflow-y: auto;overflow-x: hidden;">
+		<ul class="m-b-0">
+			@{
+				var cld = (List<Group4_GlassesShop.Models.DataModel.ChatDetail>)TempData["chatlistdetail"];
+			}
+
+			@if (cld != null)
+			{
+				
+				foreach (var c in cld)
+				{
+					
+					if (c.Role == 0)
+					{
+						<li class="clearfix">
+							<div class="message-data text-right">
+								<span class="message-data-time">@c.TimeChat</span>
+								<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+							</div>
+							<div class="message other-message float-right">@c.Text</div>
+						</li>
+					}
+					else if (c.Role == 1)
+					{
+						<li class="clearfix" >
+							<div class="message-data">
+								<span class="message-data-time">@c.TimeChat</span>
+							</div>
+							<div class="message my-message" style="background-color:beige">@c.Text</div>
+						</li>
+					}
+				}
+			}
+			else
+			{
+				<li class="clearfix">
+					<div class="message-data text-right">
+
+						<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+					</div>
+					<div class="message other-message float-right">Welcome to Male Fashion! May I help you?</div>
+				</li>
+			}
+		</ul>
+	</div>
+	
+		<div class="chat-message clearfix">
+			<form id="myForm" asp-action="Send" method="POST">
+				<div class="input-group mb-0">
+					<div class="input-group-prepend">
+						<span id="submitButton" class="input-group-text"><i class="fa fa-send"></i></span>
+					</div>
+					<input type="text" name="Text" class="form-control" required placeholder="Enter text here...">
+					<input type="hidden" name="Role" class="form-control" value="1">
+					<input type="hidden" name="ChatId" class="form-control" value="0" />
+					<input type="hidden" name="TimeChat" class="form-control" value="@DateTime.Now" />
+
+				</div>
+			</form>
+		
+		</div>
+	
+</div>
+

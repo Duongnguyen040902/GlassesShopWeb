@@ -1,0 +1,125 @@
+﻿@model Group4_GlassesShop.Models.DataModel.BlogModel
+@{
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using System.Net
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Edit Blog</title>
+
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+    <!-- Main CSS-->
+    <link href="../Data/cssBlog/main.css" rel="stylesheet" media="all">
+</head>
+<style>
+    .ck-editor__editable {
+        height: 300px; /* Đặt chiều cao mong muốn */
+    }
+</style>
+<body>
+    <div class="page-wrapper bg-white p-t-100 p-b-50">
+        <div class="wrapper wrapper--w900">
+            <div class="card card-6">
+                <div class="card-heading bg-white">
+                    <h2 class="title" style="color: black;">Update Blog</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("EditBlog", "ManagerBlog", FormMethod.Post))
+                    {
+                        @Html.Hidden("BlogId", Model.BlogId)
+                        <div class="form-row">
+                            <div class="name">Title</div>
+                            <div class="value">
+                                @Html.TextArea("Title", null, new { @class = "input--style-6" })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Content</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    @Html.TextAreaFor(model => model.Content, new { @class = "textarea--style-6", @id = "contentTextArea", @name = "Content" })
+                                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Category Name</div>
+                            <div class="value">
+                                <select class="input--style-6" name="CategoryBlogId">
+                                    @foreach (var catBlog in context.CategoryBlogs.ToList())
+                                    {
+                                        <option value="@catBlog.CategoryBlogId" @(catBlog.CategoryBlogId == Model.CategoryBlogId ? "selected" : "")>@catBlog.Cname</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <img src="@Model.Image" style="width:25%" />
+                            <div class="value">
+                                <input type="text">
+                                <div class="input-group js-input-file">
+                                    <input class="input-file" type="file" name="Image" id="file" value="@Model.Image" />
+                                    <label class="label--file" for="file">Choose file</label>
+                                    <span class="input-file__info">No file chosen</span>
+                                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Active</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <label>
+                                        <input type="radio" name="Status" value="true" @(Model.Status ? "checked" : "")> Active
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="Status" value="false" @(Model.Status ? "" : "checked")> Nonactive
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button class="btn btn--radius-2 btn--blue-2" type="submit">Update</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="../Data/vendor/jquery/jquery.min.js"></script>
+
+
+    <!-- Main JS-->
+    <script src="../Data/jsBlog/global.js"></script>
+    <script src="~/plugin/ckeditor/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#contentTextArea'))
+            .then(editor => {
+                const contentTextArea = document.querySelector('#contentTextArea');
+                editor.model.document.on('change:data', () => {
+                    const content = editor.getData();
+                    contentTextArea.value = content;
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
+</html>

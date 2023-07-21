@@ -1,0 +1,751 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+namespace Group4_GlassesShop.Models.DataModel
+{
+    public partial class GlassesShopContext : DbContext
+    {
+        public GlassesShopContext()
+        {
+        }
+
+        public GlassesShopContext(DbContextOptions<GlassesShopContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<Account> Accounts { get; set; } = null!;
+        public virtual DbSet<Address> Addresses { get; set; } = null!;
+        public virtual DbSet<AdministrativeRegion> AdministrativeRegions { get; set; } = null!;
+        public virtual DbSet<AdministrativeUnit> AdministrativeUnits { get; set; } = null!;
+        public virtual DbSet<Blog> Blogs { get; set; } = null!;
+        public virtual DbSet<Brand> Brands { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<CategoryBlog> CategoryBlogs { get; set; } = null!;
+        public virtual DbSet<Chat> Chats { get; set; } = null!;
+        public virtual DbSet<ChatDetail> ChatDetails { get; set; } = null!;
+        public virtual DbSet<Color> Colors { get; set; } = null!;
+        public virtual DbSet<Customer> Customers { get; set; } = null!;
+        public virtual DbSet<District> Districts { get; set; } = null!;
+        public virtual DbSet<Feature> Features { get; set; } = null!;
+        public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
+        public virtual DbSet<Image> Images { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<Province> Provinces { get; set; } = null!;
+        public virtual DbSet<Shape> Shapes { get; set; } = null!;
+        public virtual DbSet<Status> Statuses { get; set; } = null!;
+        public virtual DbSet<Stock> Stocks { get; set; } = null!;
+        public virtual DbSet<Type> Types { get; set; } = null!;
+        public virtual DbSet<Ward> Wards { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=DUONG\\SQL2022;Initial Catalog=GlassesShop;Persist Security Info=True;User ID=sa;Password=14012002dtpt");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.ToTable("Account");
+
+                entity.Property(e => e.AccountId).HasColumnName("account_id");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("password");
+
+                entity.Property(e => e.Role).HasColumnName("role");
+            });
+
+            modelBuilder.Entity<Address>(entity =>
+            {
+                entity.ToTable("Address");
+
+                entity.Property(e => e.AddressId).HasColumnName("address_id");
+
+                entity.Property(e => e.AddDetails)
+                    .HasMaxLength(100)
+                    .HasColumnName("add_details");
+
+                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+
+                entity.Property(e => e.DistrictsCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("districts_code");
+
+                entity.Property(e => e.ProvincesCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("provinces_code");
+
+                entity.Property(e => e.WardsCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("wards_code");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Address_Customers");
+
+                entity.HasOne(d => d.DistrictsCodeNavigation)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.DistrictsCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Address_districts");
+
+                entity.HasOne(d => d.ProvincesCodeNavigation)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.ProvincesCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Address_provinces");
+
+                entity.HasOne(d => d.WardsCodeNavigation)
+                    .WithMany(p => p.Addresses)
+                    .HasForeignKey(d => d.WardsCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Address_wards");
+            });
+
+            modelBuilder.Entity<AdministrativeRegion>(entity =>
+            {
+                entity.ToTable("administrative_regions");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.CodeNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name_en");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+            });
+
+            modelBuilder.Entity<AdministrativeUnit>(entity =>
+            {
+                entity.ToTable("administrative_units");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.CodeNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name_en");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.ShortName)
+                    .HasMaxLength(255)
+                    .HasColumnName("short_name");
+
+                entity.Property(e => e.ShortNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("short_name_en");
+            });
+
+            modelBuilder.Entity<Blog>(entity =>
+            {
+                entity.ToTable("Blog");
+
+                entity.Property(e => e.BlogId).HasColumnName("blog_id");
+
+                entity.Property(e => e.CategoryBlogId).HasColumnName("category_blogId");
+
+                entity.Property(e => e.Content)
+                    .HasColumnType("ntext")
+                    .HasColumnName("content");
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(50)
+                    .HasColumnName("image");
+
+                entity.Property(e => e.PuslishDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("puslish_date");
+
+                entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.Property(e => e.Title)
+                    .HasColumnType("ntext")
+                    .HasColumnName("title");
+
+                entity.Property(e => e.Viewcount).HasColumnName("viewcount");
+
+                entity.HasOne(d => d.CategoryBlog)
+                    .WithMany(p => p.Blogs)
+                    .HasForeignKey(d => d.CategoryBlogId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Blog_Category_Blog");
+            });
+
+            modelBuilder.Entity<Brand>(entity =>
+            {
+                entity.HasKey(e => e.Bid);
+
+                entity.ToTable("Brand");
+
+                entity.Property(e => e.Bid).HasColumnName("bid");
+
+                entity.Property(e => e.Bname)
+                    .HasMaxLength(50)
+                    .HasColumnName("bname");
+            });
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.ToTable("Category");
+
+                entity.Property(e => e.CategoryId).HasColumnName("category_id");
+
+                entity.Property(e => e.Cname)
+                    .HasMaxLength(50)
+                    .HasColumnName("cname");
+            });
+
+            modelBuilder.Entity<CategoryBlog>(entity =>
+            {
+                entity.ToTable("Category_Blog");
+
+                entity.Property(e => e.CategoryBlogId).HasColumnName("categoryBlogId");
+
+                entity.Property(e => e.Cname)
+                    .HasMaxLength(50)
+                    .HasColumnName("cname");
+            });
+
+            modelBuilder.Entity<Chat>(entity =>
+            {
+                entity.ToTable("Chat");
+
+                entity.HasIndex(e => e.AccId, "UQ_Chats_accID")
+                    .IsUnique();
+
+                entity.Property(e => e.ChatId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("chatID");
+
+                entity.Property(e => e.AccId).HasColumnName("accID");
+
+                entity.HasOne(d => d.Acc)
+                    .WithOne(p => p.Chat)
+                    .HasForeignKey<Chat>(d => d.AccId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Chat_Account");
+            });
+
+            modelBuilder.Entity<ChatDetail>(entity =>
+            {
+                entity.HasKey(e => e.ChatDeId)
+                    .HasName("PK__Chat_Det__6A52CB76BD558DA6");
+
+                entity.ToTable("Chat_Detail");
+
+                entity.Property(e => e.ChatDeId).HasColumnName("ChatDeID");
+
+                entity.Property(e => e.ChatId).HasColumnName("chatID");
+
+                entity.Property(e => e.Role).HasColumnName("role");
+
+                entity.Property(e => e.Text)
+                    .HasColumnType("ntext")
+                    .HasColumnName("text");
+
+                entity.Property(e => e.TimeChat)
+                    .HasColumnType("date")
+                    .HasColumnName("timeChat");
+
+                entity.HasOne(d => d.Chat)
+                    .WithMany(p => p.ChatDetails)
+                    .HasForeignKey(d => d.ChatId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Chat_Detail_Chat");
+            });
+
+            modelBuilder.Entity<Color>(entity =>
+            {
+                entity.ToTable("Color");
+
+                entity.Property(e => e.ColorId).HasColumnName("colorId");
+
+                entity.Property(e => e.ColorName)
+                    .HasMaxLength(50)
+                    .HasColumnName("colorName");
+            });
+
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasIndex(e => e.AccountId, "Unique_Customers")
+                    .IsUnique();
+
+                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+
+                entity.Property(e => e.AccountId).HasColumnName("account_id");
+
+                entity.Property(e => e.AvatarUrl)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("avatar_url");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.PhoneNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("phone_number");
+
+                entity.HasOne(d => d.Account)
+                    .WithOne(p => p.Customer)
+                    .HasForeignKey<Customer>(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Customers_Account");
+            });
+
+            modelBuilder.Entity<District>(entity =>
+            {
+                entity.HasKey(e => e.DCode)
+                    .HasName("districts_pkey");
+
+                entity.ToTable("districts");
+
+                entity.HasIndex(e => e.ProvinceCode, "idx_districts_province");
+
+                entity.HasIndex(e => e.AdministrativeUnitId, "idx_districts_unit");
+
+                entity.Property(e => e.DCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("d_code");
+
+                entity.Property(e => e.AdministrativeUnitId).HasColumnName("administrative_unit_id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.DistrictName)
+                    .HasMaxLength(255)
+                    .HasColumnName("district_name");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+
+                entity.Property(e => e.ProvinceCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("province_code");
+
+                entity.HasOne(d => d.AdministrativeUnit)
+                    .WithMany(p => p.Districts)
+                    .HasForeignKey(d => d.AdministrativeUnitId)
+                    .HasConstraintName("districts_administrative_unit_id_fkey");
+
+                entity.HasOne(d => d.ProvinceCodeNavigation)
+                    .WithMany(p => p.Districts)
+                    .HasForeignKey(d => d.ProvinceCode)
+                    .HasConstraintName("districts_province_code_fkey");
+            });
+
+            modelBuilder.Entity<Feature>(entity =>
+            {
+                entity.ToTable("Feature");
+
+                entity.Property(e => e.FeatureId).HasColumnName("feature_id");
+
+                entity.Property(e => e.FeatureName)
+                    .HasMaxLength(50)
+                    .HasColumnName("feature_name");
+            });
+
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.ToTable("Feedback");
+
+                entity.Property(e => e.FeedbackId).HasColumnName("feedbackID");
+                entity.Property(e => e.Rating).HasColumnName("rating");
+                entity.Property(e => e.IsApproved).HasColumnName("IsApproved");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
+
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.Content)
+                    .HasMaxLength(300)
+                    .HasColumnName("content");
+
+                entity.Property(e => e.ProductId).HasColumnName("productID");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.Feedbacks)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Feedback_Customers");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.Feedbacks)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Feedback_Products");
+            });
+
+            modelBuilder.Entity<Image>(entity =>
+            {
+                entity.ToTable("Image");
+
+                entity.Property(e => e.ImageId).HasColumnName("image_id");
+
+                entity.Property(e => e.ImageUrl)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("image_url");
+
+                entity.Property(e => e.Pid).HasColumnName("pid");
+
+                entity.HasOne(d => d.PidNavigation)
+                    .WithMany(p => p.Images)
+                    .HasForeignKey(d => d.Pid)
+                    .HasConstraintName("FK_Image_Products");
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.OrderId).HasColumnName("order_id");
+
+                entity.Property(e => e.AddressId).HasColumnName("address_id");
+
+                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+
+                entity.Property(e => e.OrderDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("order_date");
+
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
+
+                entity.Property(e => e.TotalPrice)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("total_price");
+
+                entity.HasOne(d => d.Address)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.AddressId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Orders_Address");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Orders_Customers");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK__Orders__status_i__625A9A57");
+            });
+
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasKey(e => new { e.OrderId, e.StockId });
+
+                entity.ToTable("Order_Details");
+
+                entity.Property(e => e.OrderId).HasColumnName("orderID");
+
+                entity.Property(e => e.StockId).HasColumnName("stockID");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("price");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Order_Details_Orders");
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasKey(e => e.Pid);
+
+                entity.Property(e => e.Pid).HasColumnName("pid");
+
+                entity.Property(e => e.BestSeller).HasColumnName("best_seller");
+
+                entity.Property(e => e.BrandId).HasColumnName("brand_id");
+
+                entity.Property(e => e.CategoryId).HasColumnName("category_id");
+
+                entity.Property(e => e.Created)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created");
+
+                entity.Property(e => e.Description)
+                    .HasColumnType("ntext")
+                    .HasColumnName("description");
+
+                entity.Property(e => e.FeatureId).HasColumnName("feature_id");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("price");
+
+                entity.Property(e => e.ProducctName)
+                    .HasMaxLength(100)
+                    .HasColumnName("producct_name");
+
+                entity.Property(e => e.ShapeId).HasColumnName("shape_id");
+
+                entity.Property(e => e.TypeId).HasColumnName("type_id");
+
+                entity.Property(e => e.Updated)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated");
+
+                entity.HasOne(d => d.Brand)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.BrandId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Brand");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Category");
+
+                entity.HasOne(d => d.Feature)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.FeatureId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Feature");
+
+                entity.HasOne(d => d.Shape)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.ShapeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Shape1");
+
+                entity.HasOne(d => d.Type)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.TypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Products_Type");
+            });
+
+            modelBuilder.Entity<Province>(entity =>
+            {
+                entity.HasKey(e => e.PCode)
+                    .HasName("provinces_pkey");
+
+                entity.ToTable("provinces");
+
+                entity.HasIndex(e => e.AdministrativeRegionId, "idx_provinces_region");
+
+                entity.HasIndex(e => e.AdministrativeUnitId, "idx_provinces_unit");
+
+                entity.Property(e => e.PCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("p_code");
+
+                entity.Property(e => e.AdministrativeRegionId).HasColumnName("administrative_region_id");
+
+                entity.Property(e => e.AdministrativeUnitId).HasColumnName("administrative_unit_id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+
+                entity.Property(e => e.ProvinName)
+                    .HasMaxLength(255)
+                    .HasColumnName("provin_name");
+
+                entity.HasOne(d => d.AdministrativeRegion)
+                    .WithMany(p => p.Provinces)
+                    .HasForeignKey(d => d.AdministrativeRegionId)
+                    .HasConstraintName("provinces_administrative_region_id_fkey");
+
+                entity.HasOne(d => d.AdministrativeUnit)
+                    .WithMany(p => p.Provinces)
+                    .HasForeignKey(d => d.AdministrativeUnitId)
+                    .HasConstraintName("provinces_administrative_unit_id_fkey");
+            });
+
+            modelBuilder.Entity<Shape>(entity =>
+            {
+                entity.ToTable("Shape");
+
+                entity.Property(e => e.ShapeId).HasColumnName("shape_id");
+
+                entity.Property(e => e.ShapeName)
+                    .HasMaxLength(50)
+                    .HasColumnName("shape_name");
+            });
+
+            modelBuilder.Entity<Status>(entity =>
+            {
+                entity.ToTable("Status");
+
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
+
+                entity.Property(e => e.Status1)
+                    .HasMaxLength(20)
+                    .HasColumnName("status");
+            });
+
+            modelBuilder.Entity<Stock>(entity =>
+            {
+                entity.ToTable("Stock");
+
+                entity.Property(e => e.StockId).HasColumnName("stockID");
+
+                entity.Property(e => e.ColorId).HasColumnName("colorID");
+
+                entity.Property(e => e.ProductId).HasColumnName("productID");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.HasOne(d => d.Color)
+                    .WithMany(p => p.Stocks)
+                    .HasForeignKey(d => d.ColorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Stock_Color");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.Stocks)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Stock_Products");
+            });
+
+            modelBuilder.Entity<Type>(entity =>
+            {
+                entity.ToTable("Type");
+
+                entity.Property(e => e.TypeId).HasColumnName("type_id");
+
+                entity.Property(e => e.TypeName)
+                    .HasMaxLength(50)
+                    .HasColumnName("type_name");
+            });
+
+            modelBuilder.Entity<Ward>(entity =>
+            {
+                entity.HasKey(e => e.WCode)
+                    .HasName("wards_pkey");
+
+                entity.ToTable("wards");
+
+                entity.HasIndex(e => e.DistrictCode, "idx_wards_district");
+
+                entity.HasIndex(e => e.AdministrativeUnitId, "idx_wards_unit");
+
+                entity.Property(e => e.WCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("w_code");
+
+                entity.Property(e => e.AdministrativeUnitId).HasColumnName("administrative_unit_id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.DistrictCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("district_code");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.WNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("w_name_en");
+
+                entity.Property(e => e.WardsName)
+                    .HasMaxLength(255)
+                    .HasColumnName("wards_name");
+
+                entity.HasOne(d => d.AdministrativeUnit)
+                    .WithMany(p => p.Wards)
+                    .HasForeignKey(d => d.AdministrativeUnitId)
+                    .HasConstraintName("wards_administrative_unit_id_fkey");
+
+                entity.HasOne(d => d.DistrictCodeNavigation)
+                    .WithMany(p => p.Wards)
+                    .HasForeignKey(d => d.DistrictCode)
+                    .HasConstraintName("wards_district_code_fkey");
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Group4_GlassesShop.Models.DataModel.District>
+<style>
+    .custom-select {
+        height: auto;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+</style>
+<select id="districts" name="SelectedDistrictId" class="form-control custom-select" onchange="loadWards()">
+    @foreach (var district in Model)
+    {
+        <option value="@district.DCode">@district.FullNameEn</option>
+    }
+</select>

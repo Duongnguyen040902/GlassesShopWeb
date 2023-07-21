@@ -1,0 +1,326 @@
+@model Group4_GlassesShop.Areas.Admin.Models.ReportDetail
+@{
+	ViewData["Title"] = "Dashboard";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+
+<style>
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+		table th,
+		table td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ccc;
+		}
+
+		table th {
+			background-color: #f2f2f2;
+		}
+
+		table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		table tr:hover {
+			background-color: #e6e6e6;
+		}
+
+</style>
+
+@using (Html.BeginForm("Dashboard", "AdminDashboard", FormMethod.Post, new { id = "reportForm" }))
+{
+	<div class="form-group">
+		<label for="reportType">Report</label>
+		<select class="form-control" id="reportType" name="reportType" style="width: 150px;">
+			<option value="Today">Today</option>
+			<option value="Weekly">Weekly</option>
+			<option value="Monthly">Monthly</option>
+		</select>
+	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+}
+
+<div style="transform: scale(0.9); transform-origin: top left;">
+	<!-- MAIN CONTENT-->
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="overview-wrap">
+				<h2 class="title-1">overview</h2>
+			</div>
+		</div>
+	</div>
+	<!-- box -->
+	<div class="row m-t-25">
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c1">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-account-o"></i>
+						</div>
+						<div class="text">
+							<h2 id="totalOrderInPro">@Model.ReportOrder.TotalOrderInPro</h2>
+							<span>Order in progress</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart1"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c2">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-shopping-cart"></i>
+						</div>
+						<div class="text">
+							<h2 id="totalOrders">@Model.ReportOrder.TotalOrders</h2>
+							<span>Total Orders</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart2"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c3">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-calendar-note"></i>
+						</div>
+						<div class="text">
+							<h2 id="soldOutProducts">@Model.ReportOrder.SoldOutProducts</h2>
+							<span>Sold</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart3"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			<div class="overview-item overview-item--c4">
+				<div class="overview__inner">
+					<div class="overview-box clearfix">
+						<div class="icon">
+							<i class="zmdi zmdi-calendar-note"></i>
+						</div>
+						<div class="text">
+							<h2 id="totalRevenue" style="font-size: 20px; font-weight: bold; margin-bottom: 5px;">@String.Format("{0:0,00}", @Model.ReportOrder.totalRevenue)</h2>
+							<span>Total Earnings</span>
+						</div>
+					</div>
+					<div class="overview-chart">
+						<canvas id="widgetChart3"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+@*					<th>
+						<input type="checkbox" id="select-all-checkbox">
+					</th>*@
+					<th>
+						Order ID
+					</th>
+					<th>
+						Customer
+					</th>
+					<th>
+						Order Date
+					</th>
+					<th>
+						Total Price
+					</th>
+					<th>
+						Status
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var item in Model.Order.ToList())
+				{
+					<tr class="unconfirmed-order">
+@*						<td>
+							<input type="checkbox" class="select-order-checkbox" data-order-id="@item.OrderId">
+						</td>*@
+						<td>@item.OrderId</td>
+						@{
+							var cusName = context.Customers.Where(c => c.CustomerId == item.CustomerId).FirstOrDefault();
+							<td>@cusName.Name</td>
+						}
+						<td>@item.OrderDate</td>
+						<td>@item.TotalPrice</td>
+						@{
+							var statusNam = context.Statuses.Where(s => s.StatusId == item.StatusId).FirstOrDefault();
+							<td>@statusNam.Status1</td>
+						}
+						<td>
+							@if (statusNam.StatusId == 1)
+							{
+								<a href="#" class="confirm-link" data-order-id="@item.OrderId">Confirm Ship</a>
+							}
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var reportForm = document.querySelector('#reportForm');
+		var reportTypeSelect = document.querySelector('#reportType');
+
+		// Lắng nghe sự kiện submit của form
+		reportForm.addEventListener('submit', function (event) {
+			event.preventDefault(); // Ngăn chặn submit mặc định
+
+			// Lấy giá trị từ trường select
+			var reportType = reportTypeSelect.value;
+
+			// Tính toán startDate và endDate dựa trên giá trị reportType
+			var currentDate = moment().utcOffset(7); // Lấy thời gian hiện tại theo múi giờ Việt Nam
+			var startDate, endDate;
+
+			switch (reportType) {
+				case 'Today':
+					startDate = currentDate.clone().startOf('day').format('YYYY-MM-DD HH:mm');
+					endDate = currentDate.clone().endOf('day').format('YYYY-MM-DD HH:mm');
+					break;
+				case 'Weekly':
+					var firstDayOfWeek = currentDate.clone().startOf('isoWeek');
+					var lastDayOfWeek = currentDate.clone().endOf('isoWeek');
+					startDate = firstDayOfWeek.format('YYYY-MM-DD HH:mm');
+					endDate = lastDayOfWeek.format('YYYY-MM-DD HH:mm');
+					break;
+				case 'Monthly':
+					var firstDayOfMonth = currentDate.clone().startOf('month');
+					var lastDayOfMonth = currentDate.clone().endOf('month');
+					startDate = firstDayOfMonth.format('YYYY-MM-DD HH:mm');
+					endDate = lastDayOfMonth.format('YYYY-MM-DD HH:mm');
+					break;
+				default:
+					startDate = '';
+					endDate = '';
+					break;
+			}
+
+			// Gán giá trị cho các trường input hidden
+			var startDateInput = document.createElement('input');
+			startDateInput.setAttribute('type', 'hidden');
+			startDateInput.setAttribute('name', 'startDate');
+			startDateInput.setAttribute('value', startDate);
+			reportForm.appendChild(startDateInput);
+
+			var endDateInput = document.createElement('input');
+			endDateInput.setAttribute('type', 'hidden');
+			endDateInput.setAttribute('name', 'endDate');
+			endDateInput.setAttribute('value', endDate);
+			reportForm.appendChild(endDateInput);
+
+			// Submit form
+			reportForm.submit();
+		});
+
+		// Đặt giá trị mặc định cho trường select khi tải trang
+		var urlParams = new URLSearchParams(window.location.search);
+		var reportType = urlParams.get('reportType');
+		if (reportType) {
+			// Chọn option tương ứng
+			var optionToSelect = reportTypeSelect.querySelector('option[value="' + reportType + '"]');
+			if (optionToSelect) {
+				optionToSelect.selected = true;
+			}
+		}
+	});
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var confirmLinks = document.querySelectorAll('.confirm-link');
+		var confirmUrl = '@Url.Action("Confirm", "AdminDashboard")';
+		var totalOrderInProElement = document.getElementById('totalOrderInPro');
+
+		confirmLinks.forEach(function (link) {
+			link.addEventListener('click', function (event) {
+				event.preventDefault();
+
+				var orderId = link.getAttribute('data-order-id');
+				var urlWithParams = confirmUrl + '?id=' + orderId; // Thêm tham số id vào URL
+
+				fetch(urlWithParams, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+					.then(function (response) {
+						// Xử lý phản hồi từ server (nếu cần)
+						if (response.ok) {
+							// Xử lý thành công
+							console.log("Confirm Ship thành công!");
+
+							// Ẩn đơn hàng đã được xác nhận
+							var confirmedOrder = link.closest('.unconfirmed-order');
+							confirmedOrder.style.display = 'none';
+
+							// Cập nhật giá trị "Order in progress"
+							var currentTotalOrderInPro = parseInt(totalOrderInProElement.innerText);
+							totalOrderInProElement.innerText = currentTotalOrderInPro - 1;
+
+							// Hiển thị thông báo thành công
+							alert("Confirm Ship thành công!");
+						} else {
+							// Xử lý lỗi
+							console.log("Lỗi xác nhận ship hàng!");
+						}
+					})
+					.catch(function (error) {
+						// Xử lý lỗi (nếu có)
+						console.log("Lỗi xác nhận ship hàng: " + error);
+					});
+			});
+		});
+	});
+</script>
+
+@*
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var selectAllCheckbox = document.getElementById('select-all-checkbox');
+		var selectOrderCheckboxes = document.querySelectorAll('.select-order-checkbox');
+
+		selectAllCheckbox.addEventListener('change', function () {
+			selectOrderCheckboxes.forEach(function (checkbox) {
+				checkbox.checked = selectAllCheckbox.checked;
+			});
+		});
+	});
+</script>*@
+
+
+
+
+
+
+

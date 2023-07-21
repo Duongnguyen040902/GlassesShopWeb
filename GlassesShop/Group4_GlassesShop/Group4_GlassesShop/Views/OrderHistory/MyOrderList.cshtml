@@ -1,0 +1,837 @@
+﻿@using System.Linq
+@model Group4_GlassesShop.Models.MyOrderModel.PaginatedOrderViewModel
+@{
+    ViewData["Title"] = "UserOrderList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext glShop = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&amp;display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&amp;display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="../css/rome.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .order-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-status {
+            text-align: right;
+        }
+
+            .order-status p {
+                margin: 10px;
+                font-size: 14px;
+                display: contents;
+                text-align: right;
+                color: red;
+            }
+
+        .product-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 20px;
+        }
+
+            .product-image img {
+                max-width: 100px;
+                height: auto;
+            }
+
+        .product-description {
+            flex: 1;
+        }
+
+        .product-name {
+            margin: 0;
+        }
+
+        .product-variant {
+            margin: 0;
+        }
+
+        .product-price {
+            margin: 0;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .no-review {
+            margin: 0;
+        }
+
+        .buy-again {
+            font-size: 14px;
+            display: inline-block;
+            outline: 0;
+            border: 0;
+            cursor: pointer;
+            will-change: box-shadow,transform;
+            background: radial-gradient( 100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100% );
+            box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+            padding: 0 1.5em;
+            border-radius: 0.3em;
+            color: #fff;
+            height: 2.6em;
+            text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+            float: right;
+        }
+
+            .buy-again :hover {
+                box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
+                transform: translateY(-0.1em);
+            }
+
+            .buy-again :active {
+                box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
+                transform: translateY(0em);
+            }
+
+        .nav-borders .nav-link.active {
+            color: #0061f2;
+            border-bottom-color: #0061f2;
+        }
+
+        .nav-borders .nav-link {
+            color: #69707a;
+            border-bottom-width: 0.125rem;
+            border-bottom-style: solid;
+            border-bottom-color: transparent;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        .input {
+            max-width: 190px;
+            background-color: #f5f5f5;
+            color: #242424;
+            padding: .15rem .5rem;
+            min-height: 40px;
+            border-radius: 4px;
+            outline: none;
+            border: none;
+            line-height: 1.15;
+            box-shadow: 0px 10px 20px -18px;
+        }
+
+        input:focus {
+            border-bottom: 2px solid #5b5fc7;
+            border-radius: 4px 4px 2px 2px;
+        }
+
+        input:hover {
+            outline: 1px solid lightgrey;
+        }
+
+        .total-price {
+            color: orangered;
+        }
+
+        .form {
+            --input-bg: #FFf;
+            /*  background of input */
+            --padding: 1.5em;
+            --rotate: 80deg;
+            /*  rotation degree of input*/
+            --gap: 2em;
+            /*  gap of items in input */
+            --icon-change-color: #15A986;
+            /*  when rotating changed icon color */
+            --height: 40px;
+            /*  height */
+            width: 200px;
+            padding-inline-end: 1em;
+            /*  change this for padding in the end of input */
+            background: var(--input-bg);
+            position: relative;
+            border-radius: 4px;
+        }
+
+            .form label {
+                display: flex;
+                align-items: center;
+                width: 200%;
+                height: var(--height);
+                margin-top: 25px;
+                flex-direction: row;
+            }
+
+            .form input {
+                width: 100%;
+                padding-inline-start: calc(var(--padding) + var(--gap));
+                outline: none;
+                background: none;
+                border: 0;
+            }
+
+        .group {
+            display: flex;
+            line-height: 28px;
+            align-items: center;
+            position: relative;
+            max-width: 190px;
+        }
+
+        .input-search {
+            padding-left: 20px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f3f3f4;
+            color: #0d0c22;
+            transition: .3s ease;
+        }
+
+        .input::placeholder {
+            color: #9e9ea7;
+        }
+
+        .input:focus, input:hover {
+            outline: none;
+            border-color: rgba(234,76,137,0.4);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+        }
+
+        .icon {
+            position: absolute;
+            left: 1rem;
+            fill: #9e9ea7;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .form input:focus ~ .icon {
+            transform: rotate(var(--rotate)) scale(1.3);
+        }
+
+            .form input:focus ~ .icon .swap-off {
+                opacity: 1;
+                transform: rotate(-80deg);
+                visibility: visible;
+                color: var(--icon-change-color);
+            }
+
+            .form input:focus ~ .icon .swap-on {
+                opacity: 0;
+                visibility: visible;
+            }
+
+        .form input:valid ~ .icon {
+            transform: scale(1.3) rotate(var(--rotate))
+        }
+
+            .form input:valid ~ .icon .swap-off {
+                opacity: 1;
+                visibility: visible;
+                color: var(--icon-change-color);
+            }
+
+            .form input:valid ~ .icon .swap-on {
+                opacity: 0;
+                visibility: visible;
+            }
+
+        .form input:valid ~ .close-btn {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            transition: 0s;
+        }
+
+        .order-status canceled {
+            color: red;
+        }
+
+        .hide-button {
+            display: none;
+        }
+
+        .load-more {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .load-more-button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-search {
+            border: none;
+        }
+
+        .cancel-order-button {
+            margin-left: 15px;
+            --bg: #e74c3c;
+            --text-color: #fff;
+            position: relative;
+            border: none;
+            background: var(--bg);
+            color: var(--text-color);
+            font-weight: bold;
+            transition: 0.2s;
+            border-radius: 5px;
+            opacity: 0.8;
+            box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
+        }
+
+        .btn-cancel:hover {
+            opacity: 1;
+        }
+
+        .btn-cancel:active {
+            top: 4px;
+            box-shadow: #c0392b 0px 3px 2px,#000 0px 3px 5px;
+        }
+
+        .canceled-view {
+            color: red;
+        }
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            background-color: white;
+            /* justify-content: center;*/
+            border-radius: 5px;
+            margin-top: 50px;
+        }
+
+        .value {
+            background-color: white;
+            border: none;
+            padding: 10px;
+            color: black;
+            display: flex;
+            position: relative;
+            gap: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .icon-menu {
+            color: black;
+        }
+
+        .value:not(:active):hover,
+        .value:focus {
+            background-color: #21262C;
+        }
+
+        .value:focus,
+        .value:active {
+            background-color: #1A1F24;
+            outline: none;
+        }
+
+        .value::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: -10px;
+            width: 5px;
+            height: 80%;
+            background-color: #2F81F7;
+            border-radius: 5px;
+            opacity: 0;
+        }
+
+        .value:focus::before,
+        .value:active::before {
+            opacity: 1;
+        }
+
+        .value svg {
+            width: 15px
+        }
+
+
+        .pagination {
+            margin-top: 20px;
+            margin-left: 470px;
+        }
+
+        .pagination-list {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination-item {
+            margin-right: 5px;
+        }
+
+        .pagination-link {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            color: #333;
+            text-decoration: none;
+        }
+
+            .pagination-link:hover {
+                background-color: #ddd;
+            }
+
+        .pagination-item.active .pagination-link {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .pagination-item.disabled .pagination-link {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .form-controlSelect {
+            display: block;
+            width: 35%;
+            height: 35px;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .form-controlDate {
+            display: block;
+            width: 100%;
+            height: 30px;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+        .price-container {
+            overflow: hidden;
+        }
+
+        .product-price {
+            float: left;
+            color: orangered;
+        }
+
+        .sum-price {
+            float: right;
+            color: orangered;
+        }
+
+        body {
+            background-color: #f9f9fa
+        }
+
+        .flex {
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto
+        }
+
+        .padding {
+            padding: 5rem
+        }
+
+        .card {
+            background: #fff;
+            border-width: 0;
+            border-radius: .25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+            margin-bottom: 1.5rem
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(19, 24, 44, .125);
+            border-radius: .25rem
+        }
+
+        .card-header {
+            padding: .75rem 1.25rem;
+            margin-bottom: 0;
+            background-color: rgba(19, 24, 44, .03);
+            border-bottom: 1px solid rgba(19, 24, 44, .125)
+        }
+
+            .card-header:first-child {
+                border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+            }
+
+        card-footer,
+        .card-header {
+            background-color: transparent;
+            border-color: rgba(160, 175, 185, .15);
+            background-clip: padding-box
+        }
+
+        .filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+            display: flex;
+        }
+
+        .form-filterDate {
+            display: flex;
+            align-items: center;
+        }
+
+            .form-filterDate label {
+                margin-right: 5px;
+            }
+
+        .form-controlDate {
+            width: 150px;
+            height: 30px;
+        }
+
+        .btn-primary {
+            height: 30px;
+            margin-top: 32px;
+            margin-left: 5px;
+        }
+
+        .button-filter {
+            height: 30px;
+            margin-left: 5px;
+            padding: 0 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .button-filter:hover {
+                background-color: #0062cc;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container-xl px-4 mt-4">
+        <div class="page-content">
+            <div class="container-fluid">
+                <nav class="nav nav-borders">
+                    <a class="nav-link" href="@Url.ActionLink("UserProfile","CustomerProfile")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My Profile</a>
+                    <a class="nav-link active ms-0" href="@Url.ActionLink("MyOrderList","OrderHistory")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My order</a>
+                    <a class="nav-link" href="@Url.ActionLink("AddressView","Address")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Address</a>
+                    <a class="nav-link" href="@Url.ActionLink("SendCode","ChangePassword")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Change password</a>
+                </nav>
+                @using (Html.BeginForm("MyOrderList", "OrderHistory", FormMethod.Get))
+                {
+
+                    <div class="form-group" style="margin-top: 25px">
+                        <input placeholder="Search by product name" class="input-search" name="searchKey" value="@ViewBag.SearchKey">
+                        <button class="button-search" type="submit"><span class="icon_search"></span></button>
+                    </div>
+                    <div class="filter" style="margin-bottom:25px">
+                        <div class="form-group">
+                                <select name="statusId" id="statusId">
+                                    <option value="">All</option>
+                                @foreach (var status in glShop.Statuses)
+                                {
+                                    <option value="@status.StatusId" @(ViewBag.StatusId == status.StatusId ? "selected" : "")>@status.Status1</option>
+                                }
+                                </select>                          
+                            <button type="submit" class="button-filter" style="height: 30px; margin-left: 5px;">Filter</button>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-filterDate" style="margin-right:10px">
+                                <label for="input_from">From</label>
+                                <input type="date" class="form-controlDate" id="input_from" name="fromDate" data-rome-id="0" value="@ViewBag.FromDate">
+                            </div>
+                            <div class="form-filterDate">
+                                <label for="input_from">To</label>
+                                <input type="date" class="form-controlDate" id="input_to" name="toDate" data-rome-id="1" value="@ViewBag.ToDate">
+                            </div>
+                            <button type="submit" class="button-filter" style="height: 30px; margin-left: 5px;">Filter</button>
+                        </div>
+                    </div>
+                }
+                <div id="orderListContainer" class="order-container">
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-info">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var orderViewModel in Model.Orders)
+                        {
+                            <div class="product-info">
+                                <div class="header-order" style="display: inline-flex;">
+                                    <p style="text-align:left; color:black; margin:0px; font-weight: bold;">Order: @orderViewModel.OrderId</p>
+                                    <p style="margin-left: 20px;font-weight: bold;">Order Date: @orderViewModel.OrderDate</p>
+                                </div>
+                                <div class="order-status">
+                                    @if (orderViewModel.status.StatusId == 1)
+                                    {
+                                        <p style="color:blue; font-weight:bold;">@orderViewModel.status.Status1</p>
+                                        <button class="cancel-order-button btn-cancel" data-order-id="@orderViewModel.OrderId">Cancel</button>
+                                    }
+                                    else if (orderViewModel.status.StatusId == 2)
+                                    {
+                                        <p style="color:darkgoldenrod ; font-weight:bold">@orderViewModel.status.Status1</p>
+                                    }
+                                    else if (orderViewModel.status.StatusId == 3)
+                                    {
+                                        <p style="color:green ; font-weight:bold">@orderViewModel.status.Status1</p>
+                                    }
+                                    else if (orderViewModel.status.StatusId == 4)
+                                    {
+                                        <p style="color:red ; font-weight:bold">@orderViewModel.status.Status1</p>
+                                    }
+                                </div>
+                                @foreach (var orderDetailViewModel in orderViewModel.OrderDetails)
+                                {
+                                    <a href="@Url.Action("OrderDetail", "OrderHistory", new { orderId = orderViewModel.OrderId })">
+                                        <div class="product-details">
+                                            <div style="margin-bottom:5px" class="product-image">
+                                                <img src="@orderDetailViewModel.Image_Url" alt="Hình ảnh sản phẩm">
+                                            </div>
+                                            <div class="product-description">
+                                                <p style="font-weight:bold;" class="product-name">@orderDetailViewModel.ProductName</p>
+                                                <p class="product-color">@orderDetailViewModel.ColorName</p>
+                                                <div class="price-container">
+                                                    @{
+                                                        decimal Price = orderDetailViewModel.ProductPrice * orderDetailViewModel.Quantity;
+                                                    }
+                                                    <p class="product-price">₫@String.Format("{0:0,00}", orderDetailViewModel.ProductPrice) x @orderDetailViewModel.Quantity</p>
+                                                    <p class="sum-price">₫@String.Format("{0:0,00}", Price)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                            <div class="order-total">
+                                <p class="total-price" style="margin:0px;font-size:18px;">₫@String.Format("{0:0,00}",orderViewModel.TotalPrice)</p>
+                            </div>
+                            <hr />
+                        }
+                    }
+                    <div class="pagination">
+                        @if (Model.TotalPages > 1)
+                        {
+                            <ul class="pagination-list">
+                                @if (Model.CurrentPage > 1)
+                                {
+                                    <li class="pagination-item">
+                                        <a href="@Url.Action("MyOrderList", new { searchKey = ViewBag.SearchKey, statusId = ViewBag.StatusId, page = Model.CurrentPage - 1, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="pagination-link">Previous</a>
+                                    </li>
+                                }
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="pagination-item @(i == Model.CurrentPage ? "active" : "")">
+                                        <a href="@Url.Action("MyOrderList", new { searchKey = ViewBag.SearchKey, statusId = ViewBag.StatusId, page = i, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="pagination-link">@i</a>
+                                    </li>
+                                }
+                                @if (Model.CurrentPage < Model.TotalPages)
+                                {
+                                    <li class="pagination-item">
+                                        <a href="@Url.Action("MyOrderList", new { searchKey = ViewBag.SearchKey, statusId = ViewBag.StatusId, page = Model.CurrentPage + 1, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="pagination-link">Next</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/rome.js"></script>
+    <script src="/js/main.js"></script>
+    <div class="rd-container rd-container-attachment" style="left: 49.8px; top: 254px; display: none;">
+        <div class="rd-date">
+            <div class="rd-month">
+                <button class="rd-back" type="button">
+                </button>
+                <button class="rd-next" type="button">
+                </button>
+                <div class="rd-month-label">June 2023</div>
+                <table class="rd-days">
+                    <thead class="rd-days-head">
+                        <tr class="rd-days-row">
+                            <th class="rd-day-head">Su</th>
+                            <th class="rd-day-head">Mo</th>
+                            <th class="rd-day-head">Tu</th>
+                            <th class="rd-day-head">We</th>
+                            <th class="rd-day-head">Th</th>
+                            <th class="rd-day-head">Fr</th>
+                            <th class="rd-day-head">Sa</th>
+                        </tr>
+                    </thead>
+                    <tbody class="rd-days-body" data-rome-offset="0">
+                        <tr class="rd-days-row">
+                            <td class="rd-day-body rd-day-prev-month">28</td>
+                            <td class="rd-day-body rd-day-prev-month">29</td>
+                            <td class="rd-day-body rd-day-prev-month">30</td>
+                            <td class="rd-day-body rd-day-prev-month">31</td>
+                            <td class="rd-day-body">01</td>
+                            <td class="rd-day-body">02</td>
+                            <td class="rd-day-body">03</td>
+                        </tr>
+                        <tr class="rd-days-row">
+                            <td class="rd-day-body">04</td>
+                            <td class="rd-day-body">05</td>
+                            <td class="rd-day-body">06</td>
+                            <td class="rd-day-body">07</td>
+                            <td class="rd-day-body">08</td>
+                            <td class="rd-day-body">09</td>
+                            <td class="rd-day-body rd-day-selected">10</td>
+                        </tr>
+                        <tr class="rd-days-row">
+                            <td class="rd-day-body">11</td>
+                            <td class="rd-day-body">12</td>
+                            <td class="rd-day-body rd-day-disabled">13</td>
+                            <td class="rd-day-body rd-day-disabled">14</td>
+                            <td class="rd-day-body rd-day-disabled">15</td>
+                            <td class="rd-day-body rd-day-disabled">16</td>
+                            <td class="rd-day-body rd-day-disabled">17</td>
+                        </tr>
+                        <tr class="rd-days-row">
+                            <td class="rd-day-body rd-day-disabled">18</td>
+                            <td class="rd-day-body rd-day-disabled">19</td>
+                            <td class="rd-day-body rd-day-disabled">20</td>
+                            <td class="rd-day-body rd-day-disabled">21</td>
+                            <td class="rd-day-body rd-day-disabled">22</td>
+                            <td class="rd-day-body rd-day-disabled">23</td>
+                            <td class="rd-day-body rd-day-disabled">24</td>
+                        </tr>
+                        <tr class="rd-days-row">
+                            <td class="rd-day-body rd-day-disabled">25</td>
+                            <td class="rd-day-body rd-day-disabled">26</td>
+                            <td class="rd-day-body rd-day-disabled">27</td>
+                            <td class="rd-day-body rd-day-disabled">28</td>
+                            <td class="rd-day-body rd-day-disabled">29</td>
+                            <td class="rd-day-body rd-day-disabled">30</td>
+                            <td class="rd-day-body rd-day-next-month rd-day-disabled">01</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+    
+    $(document).ready(function () {
+        $('.cancel-order-button').click(function () {
+            var orderId = $(this).data('order-id');
+            var currentStatus = $(this).siblings('p');
+            var currentButton = $(this);
+
+            // Hiển thị hộp thoại xác nhận
+            var confirmation = confirm('Do you really want to cancel your order?');
+
+            // Xử lý theo lựa chọn của người dùng
+            if (confirmation) {
+                $.ajax({
+                    url: '/OrderHistory/CancelOrder',
+                    type: 'POST',
+                    data: { orderId: orderId },
+                    success: function (result) {
+                        if (result.success) {
+                            // Cập nhật lại trạng thái và thông báo thành công
+                            currentStatus.text('Canceled');
+                            currentStatus.css('color', 'red'); // Change text color to red
+                            currentStatus.addClass('canceled-view');
+                            currentButton.hide();
+                            alert('Order canceled successfully.');
+                        } else {
+                            alert('Please try again later.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred. Please try again later.');
+                    }
+                });
+            }
+
+            return false; // Ngăn chặn hành vi mặc định của nút (ví dụ: chuyển trang)
+        });
+    });
+
+</script>
+
+
+

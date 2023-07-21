@@ -1,0 +1,53 @@
+﻿using Group4_GlassesShop.Models.DataModel;
+
+namespace Group4_GlassesShop.Models.Cart
+{
+    public class Cart
+    {
+        public List<Item> _items { get; set; } = new List<Item>();
+
+        public void AddItem(Product product , int quantity)
+        {
+            Item? AddItem = _items.Where(p => p.product.Pid == product.Pid).FirstOrDefault();
+            if (AddItem == null)
+            {
+                _items.Add(new Item
+                {
+                    product = product,
+                    quantity = quantity
+                });
+            }
+            else
+            {
+                AddItem.quantity +=quantity;
+            }
+        }
+        public void ChangeQuantity(Product product, int quantity)
+        {
+            Item? AddItem = _items.Where(p => p.product.Pid == product.Pid).FirstOrDefault();
+            AddItem.quantity = quantity;
+
+            if (quantity == 0)
+
+            {
+
+                RemoveItem(product );   
+
+            }
+        }
+        public void RemoveItem(Product product)
+        {
+            _items.RemoveAll(p => p.product.Pid == product.Pid);
+        }
+
+        public double ComputeTotalValue() => (double)_items.Sum(i => i.quantity * (i.product.Price));
+
+        public void Clear()=> _items.Clear();
+    }
+
+    public class Item
+    {
+        public Product product { get; set; } = new Product();
+        public int quantity { get; set; }
+    }
+}

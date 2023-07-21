@@ -1,0 +1,180 @@
+﻿@model IPagedList<Group4_GlassesShop.Models.DataModel.Product>
+
+@{
+	ViewData["Title"] = "Products Manager";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using X.PagedList;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<style>
+	.cell {
+		max-width: 200px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.th {
+		background-color: black;
+		color: white;
+	}
+
+	
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	table th,
+	table td {
+		padding: 10px;
+		text-align: left;
+		border: 1px solid #ccc;
+	}
+
+	table th {
+		background-color: #f2f2f2;
+	}
+
+	table tr:nth-child(even) {
+		background-color: #f9f9f9;
+	}
+
+	table tr:hover {
+		background-color: #e6e6e6;
+	}
+
+
+
+</style>
+<h1>Products Manager</h1>
+<hr />
+<form class="form-header" action="Search">
+	<input class="au-input au-input--xl" type="text" name="search"
+		   placeholder="Search for product..." />
+	<button class="au-btn--submit" type="submit">
+		<i class="zmdi zmdi-search"></i>
+	</button>
+</form>
+
+
+<h4>
+	<a asp-action="Create">Create New</a>
+</h4>
+<div style="transform: scale(0.9); transform-origin: top left;">
+<table class="table" >
+	<thead>
+		<tr>
+			<th>
+					ProductName
+			</th>
+			<th>
+					Description
+			</th>
+			<th>
+					Price
+			</th>
+@*
+			<th>
+				@Html.DisplayNameFor(model => model.Created)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Updated)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.BestSeller)
+			</th>*@
+
+			<th>
+					Brand
+			</th>
+			<th>
+					Category
+			</th>
+			<th>
+					Feature
+			</th>
+			<th>
+					Shape
+			</th>
+			<th>
+					Type
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.ProducctName)
+				</td>
+				<td class="cell">
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+
+				@*<td>
+					@Html.DisplayFor(modelItem => item.Created)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Updated)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BestSeller)
+				</td>*@
+				<td>
+					@Html.DisplayFor(modelItem => item.Brand.Bname)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Category.Cname)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Feature.FeatureName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Shape.ShapeName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Type.TypeName)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.Pid">Edit</a> 
+					<p><a asp-action="Details" asp-route-id="@item.Pid">Details</a></p> 
+					<a asp-action="Delete" asp-route-id="@item.Pid" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+	@{
+		int totalPages = (int)Math.Ceiling((double)Model.TotalItemCount / Model.PageSize);
+	}
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			@if (Model.PageNumber != 1)
+			{
+				<li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = 1 })">First</a></li>
+				<li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a></li>
+			}
+
+			@for (int i = 1; i <= totalPages; i++)
+			{
+				<li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Index",  new { page = i })">@i</a></li>
+			}
+
+			@if (Model.PageNumber != totalPages)
+			{
+				<li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Next</a></li>
+				<li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = totalPages })">Last</a></li>
+			}
+		</ul>
+	</nav>
+</div>

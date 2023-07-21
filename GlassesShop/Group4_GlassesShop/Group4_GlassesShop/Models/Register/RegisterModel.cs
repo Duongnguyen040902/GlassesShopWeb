@@ -1,0 +1,50 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Group4_GlassesShop.Models.Register
+{
+    public class RegisterModel
+    {
+        [Required(ErrorMessage = "Please enter your email address")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email address")]
+        [MaxLength(50)]
+        [RegularExpression(@"^[^@]+@[^-][a-z0-9.-]+(\.(?!web$)[a-z]{2,4}|\.web\.[a-z]{2,4})$", ErrorMessage = "Please enter correct email")]
+
+
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
+        [RegularExpression(@"^(?=.*[!@#$%^&*(),.?\"":{}|<>])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$", ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
+
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Password confirmation is required.")]
+        [Compare("Password", ErrorMessage = "Password confirmation does not match.")]
+        public string PasswordConfirmation { get; set; }
+        public RegisterModel()
+        {
+
+        }
+
+        public RegisterModel(string email, string password, string passwordConfirmation)
+        {
+            Email = email;
+            Password = password;
+            PasswordConfirmation = passwordConfirmation;
+        }
+
+        public RegisterModel(string name , string email , string phonenumber , string password , string passwordConfirmation)
+        {
+            Email = email;
+            Password = password;
+            PasswordConfirmation = passwordConfirmation;
+            Name = name;
+            PhoneNumber = phonenumber;
+        }
+
+
+
+    }
+}

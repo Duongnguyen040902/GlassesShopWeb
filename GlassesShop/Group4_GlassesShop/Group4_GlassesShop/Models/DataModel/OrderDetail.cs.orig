@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Group4_GlassesShop.Models.DataModel
+{
+    public partial class OrderDetail
+    {
+        public int OrderId { get; set; }
+        public int ColorId { get; set; }
+        public int Quantity { get; set; }
+        public double Discount { get; set; }
+
+        public virtual ColorProduct Color { get; set; } = null!;
+        public virtual Order Order { get; set; } = null!;
+    }
+}

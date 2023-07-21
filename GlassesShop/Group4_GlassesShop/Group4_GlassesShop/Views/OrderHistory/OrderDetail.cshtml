@@ -1,0 +1,540 @@
+﻿@model List<Group4_GlassesShop.Models.MyOrderModel.OrderViewModel>
+@{
+    ViewData["Title"] = "UserOrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext glShop = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+<head>
+    <style>
+        .nav-borders .nav-link.active {
+            color: #0061f2;
+            border-bottom-color: #0061f2;
+        }
+
+        .nav-borders .nav-link {
+            margin-bottom: 25px;
+            color: #69707a;
+            border-bottom-width: 0.125rem;
+            border-bottom-style: solid;
+            border-bottom-color: transparent;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        body {
+            margin-top: 20px;
+        }
+
+        .steps .step {
+            display: block;
+            width: 100%;
+            margin-bottom: 35px;
+            text-align: center
+        }
+
+            .steps .step .step-icon-wrap {
+                display: block;
+                position: relative;
+                width: 100%;
+                height: 80px;
+                text-align: center
+            }
+
+                .steps .step .step-icon-wrap::before,
+                .steps .step .step-icon-wrap::after {
+                    display: block;
+                    position: absolute;
+                    top: 50%;
+                    width: 50%;
+                    height: 3px;
+                    margin-top: -1px;
+                    background-color: #e1e7ec;
+                    content: '';
+                    z-index: 1
+                }
+
+                .steps .step .step-icon-wrap::before {
+                    left: 0
+                }
+
+                .steps .step .step-icon-wrap::after {
+                    right: 0
+                }
+
+            .steps .step .step-icon {
+                display: inline-block;
+                position: relative;
+                width: 80px;
+                height: 80px;
+                border: 1px solid #e1e7ec;
+                border-radius: 50%;
+                background-color: #f5f5f5;
+                color: #374250;
+                font-size: 38px;
+                line-height: 81px;
+                z-index: 5
+            }
+
+            .steps .step .step-title {
+                margin-top: 16px;
+                margin-bottom: 0;
+                color: #606975;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .steps .step:first-child .step-icon-wrap::before {
+                display: none
+            }
+
+            .steps .step:last-child .step-icon-wrap::after {
+                display: none
+            }
+
+            .steps .step.completed .step-icon-wrap::before,
+            .steps .step.completed .step-icon-wrap::after {
+                background-color: lawngreen;
+            }
+
+            .steps .step.completed .step-icon {
+                border-color: lawngreen;
+                background-color: lawngreen;
+                color: #fff
+            }
+
+        .bg-faded, .bg-secondary {
+            background-color: #f5f5f5 !important;
+        }
+
+        .back-link {
+            margin-left: 16px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f1f1f1;
+            color: #333;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+            .back-link:hover {
+                background-color: #e1e1e1;
+            }
+
+        .order-actions {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .buy-again {
+            font-size: 14px;
+            display: inline-block;
+            outline: 0;
+            border: 0;
+            cursor: pointer;
+            will-change: box-shadow,transform;
+            background: radial-gradient( 100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100% );
+            box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+            padding: 0 1.5em;
+            border-radius: 0.3em;
+            color: #fff;
+            height: 2.6em;
+            text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+            float: right;
+        }
+
+            .buy-again :hover {
+                box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
+                transform: translateY(-0.1em);
+            }
+
+            .buy-again :active {
+                box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
+                transform: translateY(0em);
+            }
+
+        .product-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 20px;
+        }
+
+            .product-image img {
+                max-width: 100px;
+                height: auto;
+            }
+
+        .product-description {
+            flex: 1;
+            margin-bottom: 0px;
+        }
+
+            .product-description p {
+                margin-bottom: 0px;
+            }
+
+        .product-name {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .product-variant {
+            margin: 0;
+        }
+
+        .product-price {
+            margin: 0;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .total-price {
+            color: orangered;
+        }
+
+        .Btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(-50deg,rgb(39, 107, 255),rgb(112, 186, 255),rgb(39, 107, 255));
+            background-size: 250%;
+            background-position: left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition-duration: .5s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
+        }
+
+        .logoIcon {
+            fill: white;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -20px;
+            opacity: 0;
+            background: linear-gradient(to right,rgb(39, 107, 255),rgb(108, 184, 255));
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition-duration: .2s;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+
+            .tooltip::before {
+                position: absolute;
+                content: "";
+                width: 10px;
+                height: 10px;
+                background: linear-gradient(45deg,rgb(39, 107, 255),rgb(108, 184, 255));
+                background-size: 1000%;
+                background-position: center;
+                transform: rotate(45deg);
+                bottom: -15%;
+                transition-duration: .3s;
+            }
+
+        .Btn:hover .tooltip {
+            top: -50px;
+            opacity: 1;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover {
+            background-position: right;
+            transition-duration: .5s;
+        }
+
+        .delivery-address {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+            .delivery-address h4 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .delivery-address p {
+                margin: 5px 0;
+            }
+
+        .card-body h4 {
+            text-align: center;
+        }
+
+        .chatBtn {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: none;
+            background-color: linear-gradient(to right,rgb(39, 107, 255),rgb(108, 184, 255));
+            background-image: linear-gradient(-50deg,rgb(39, 107, 255),rgb(112, 186, 255),rgb(39, 107, 255));
+            cursor: pointer;
+            padding-top: 3px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.164);
+            position: relative;
+            background-size: 300%;
+            background-position: left;
+            transition-duration: 1s;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -40px;
+            opacity: 0;
+            background-color: rgb(255, 180, 82);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition-duration: .5s;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+
+        .chatBtn:hover .tooltip {
+            opacity: 1;
+            transition-duration: .5s;
+        }
+
+        .chatBtn:hover {
+            background-position: right;
+            transition-duration: 1s;
+        }
+
+        .delivery-shop h4 {
+            text-align: center;
+        }
+
+        .feedback-title {
+            font-weight: 600;
+        }
+
+        .feedback-container {
+            display: flex;
+            margin-top: 24px;
+            justify-content: space-between margin-top: 24px;
+            gap: 24px;
+        }
+
+    </style>
+</head>
+
+<div class="container-xl px-4 mt-4">
+    <div class="page-content">
+        <div class="container-fluid">
+            <nav class="nav nav-borders">
+                <a class="nav-link" href="@Url.ActionLink("UserProfile","CustomerProfile")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My Profile</a>
+                <a class="nav-link active ms-0" href="@Url.ActionLink("MyOrderList","OrderHistory")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">My order</a>
+                <a class="nav-link" href="@Url.ActionLink("AddressView","Address")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Address</a>
+                <a class="nav-link" href="@Url.ActionLink("SendCode","ChangePassword")" onmouseover="this.style.transform = 'scale(1.2)';" onmouseout="this.style.transform = 'scale(1)';">Change password</a>
+            </nav>
+            <a href="@Url.ActionLink("MyOrderList","OrderHistory")" class="back-link">Trở lại</a>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
+            @foreach (var orderViewModel in Model)
+            {
+                <div class="container padding-bottom-3x mb-1">
+                    <div class="card mb-3">
+                        <div class="p-4 text-center text-white text-lg bg-dark rounded-top"><span class="text-uppercase">Tracking Order No - </span><span class="text-medium">@orderViewModel.OrderId</span></div>
+                        <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+                            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> @orderViewModel.status.Status1</div>
+                            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Date:</span> @orderViewModel.OrderDate</div>
+                        </div>
+                        <div class="card-body">
+                            @if (orderViewModel.status.StatusId == 4)
+                            {
+                                <h4>Order has been Canceled</h4>
+                            }
+                            else
+                            {
+                                <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                                    @if (orderViewModel.status.StatusId >= 1)
+                                    {
+                                        <div class="step completed">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="pe-7s-cart"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Pending</h4>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="step">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="pe-7s-cart"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Pending</h4>
+                                        </div>
+                                    }
+                                    @if (orderViewModel.status.StatusId >= 2)
+                                    {
+                                        <div class="step completed">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="pe-7s-car"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Shipping</h4>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="step">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="pe-7s-car"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Shipping</h4>
+                                        </div>
+                                    }
+
+                                    @if (orderViewModel.status.StatusId >= 3)
+                                    {
+                                        <div class="step completed">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="pe-7s-home"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Complete</h4>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="step">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="pe-7s-home"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Complete</h4>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            <hr />
+                            @foreach (var orderDetailViewModel in orderViewModel.OrderDetails)
+                            {
+                                <div class="product-brand" style="display:inline-flex; margin-bottom:10px;">
+                                    <button class="Btn">
+                                        <svg class="logoIcon" height="1em" viewBox="0 0 576 512"><path d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z"></path></svg>
+                                    </button>
+                                    <a href="@Url.Action("Shop","Shop", new {BrandId = orderDetailViewModel.BrandId})" style="font-weight: bold; margin:auto; margin-left:7px;">@orderDetailViewModel.Brand</a>
+                                </div>
+                                <div class="product-details">
+                                    <div style="margin-bottom:5px" class="product-image">
+                                        <img src="@orderDetailViewModel.Image_Url" alt="Product Image">
+                                    </div>
+                                    <div class="product-description">
+                                        <p style="font-weight:bold;" class="product-name">@orderDetailViewModel.ProductName - @orderDetailViewModel.Category</p>
+                                        <p class="product-color">@orderDetailViewModel.ColorName - @orderDetailViewModel.Type - @orderDetailViewModel.Shape</p>
+                                        <p class="product-quantity">Quantity: @orderDetailViewModel.Quantity</p>
+                                        <p style="color:orangered" class="product-price">₫@orderDetailViewModel.ProductPrice</p>
+                                    </div>
+                                </div>
+                                <div class="order-actions">
+                                    <a class="buy-again" style="margin-right: 25px; padding:8px 21px;height: auto; align-items: center; color: white"
+                                       href="@Url.Action("GetProductByPid", "Shop", new { pid = orderDetailViewModel.ProductId})">Repurchase</a>
+                                    @if (orderViewModel.status.StatusId == 3 && orderDetailViewModel.feedback == null)
+                                    {
+                                        <a class="chatBtn" href="@Url.Action("CreateFeedback", "Feedback", new { productId = orderDetailViewModel.ProductId, orderId =  orderViewModel.OrderId })">
+                                            <svg height="1.6em" fill="white" xml:space="preserve" viewBox="0 0 1000 1000" y="0px" x="0px" version="1.1">
+                                            <path d="M881.1,720.5H434.7L173.3,941V720.5h-54.4C58.8,720.5,10,671.1,10,610.2v-441C10,108.4,58.8,59,118.9,59h762.2C941.2,59,990,108.4,990,169.3v441C990,671.1,941.2,720.5,881.1,720.5L881.1,720.5z M935.6,169.3c0-30.4-24.4-55.2-54.5-55.2H118.9c-30.1,0-54.5,24.7-54.5,55.2v441c0,30.4,24.4,55.1,54.5,55.1h54.4h54.4v110.3l163.3-110.2H500h381.1c30.1,0,54.5-24.7,54.5-55.1V169.3L935.6,169.3z M717.8,444.8c-30.1,0-54.4-24.7-54.4-55.1c0-30.4,24.3-55.2,54.4-55.2c30.1,0,54.5,24.7,54.5,55.2C772.2,420.2,747.8,444.8,717.8,444.8L717.8,444.8z M500,444.8c-30.1,0-54.4-24.7-54.4-55.1c0-30.4,24.3-55.2,54.4-55.2c30.1,0,54.4,24.7,54.4,55.2C554.4,420.2,530.1,444.8,500,444.8L500,444.8z M282.2,444.8c-30.1,0-54.5-24.7-54.5-55.1c0-30.4,24.4-55.2,54.5-55.2c30.1,0,54.4,24.7,54.4,55.2C336.7,420.2,312.3,444.8,282.2,444.8L282.2,444.8z"></path>
+                                                                                </svg>
+                                            <span class="tooltip">Feedback</span>
+                                        </a>
+                                    }
+
+
+                                </div>
+                                <div class="feedback-container" style="margin-bottom: 25px;">
+                                    <div class="">
+                                        <div class="feedback-title">
+                                            Your feedback:
+                                        </div>
+                                        <div>
+                                            @if (orderViewModel.status.StatusId == 3 && orderDetailViewModel.feedback == null)
+                                            {
+                                                <span>Not feedback yet</span>
+                                            }
+
+                                            @if (orderViewModel.status.StatusId == 3 && orderDetailViewModel.feedback != null)
+                                            {
+                                                @orderDetailViewModel.feedback.Content
+                                            }
+                                        </div>
+                                    </div>
+                                    @if (orderViewModel.status.StatusId == 3 && orderDetailViewModel.feedback != null)
+                                    {
+                                        <a class="chatBtn" href="@Url.Action("editFeedback", "Feedback", new { productId = orderDetailViewModel.ProductId, orderId =  orderViewModel.OrderId })">
+                                            <svg height="1.6em" fill="white" xml:space="preserve" viewBox="0 0 1000 1000" y="0px" x="0px" version="1.1">
+                                            <path d="M881.1,720.5H434.7L173.3,941V720.5h-54.4C58.8,720.5,10,671.1,10,610.2v-441C10,108.4,58.8,59,118.9,59h762.2C941.2,59,990,108.4,990,169.3v441C990,671.1,941.2,720.5,881.1,720.5L881.1,720.5z M935.6,169.3c0-30.4-24.4-55.2-54.5-55.2H118.9c-30.1,0-54.5,24.7-54.5,55.2v441c0,30.4,24.4,55.1,54.5,55.1h54.4h54.4v110.3l163.3-110.2H500h381.1c30.1,0,54.5-24.7,54.5-55.1V169.3L935.6,169.3z M717.8,444.8c-30.1,0-54.4-24.7-54.4-55.1c0-30.4,24.3-55.2,54.4-55.2c30.1,0,54.5,24.7,54.5,55.2C772.2,420.2,747.8,444.8,717.8,444.8L717.8,444.8z M500,444.8c-30.1,0-54.4-24.7-54.4-55.1c0-30.4,24.3-55.2,54.4-55.2c30.1,0,54.4,24.7,54.4,55.2C554.4,420.2,530.1,444.8,500,444.8L500,444.8z M282.2,444.8c-30.1,0-54.5-24.7-54.5-55.1c0-30.4,24.4-55.2,54.5-55.2c30.1,0,54.4,24.7,54.4,55.2C336.7,420.2,312.3,444.8,282.2,444.8L282.2,444.8z"></path>
+                                                                                </svg>
+                                            <span class="tooltip">Edit Feedback</span>
+                                        </a>
+                                    }
+                                </div>
+
+                            }
+                            <div class="order-total" style="margin-right: 25px;">
+                                <p class="total-price" style="margin:0px;font-size:18px;">₫@orderViewModel.TotalPrice</p>
+                            </div>
+                            <hr />
+                            @if (orderViewModel.status.StatusId != 4)
+                            {
+                                <div class="delivery-address">
+                                    <div class="delivery-shop">
+                                        <h4 style="font-weight:bold;">Address Delivery</h4>
+                                        <p>Glasses Shop</p>
+                                    </div>
+                                    <p>Consignee's name: @orderViewModel.CustomerName</p>
+                                    <p>Contact: @orderViewModel.CustomerPhone</p>
+                                    <p>@orderViewModel.AddDetail - @orderViewModel.WardName - @orderViewModel.DistrictName - @orderViewModel.ProvinceName</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="delivery-address">
+                                    <p>The order was canceled for some reason!</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-sm-between align-items-center">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

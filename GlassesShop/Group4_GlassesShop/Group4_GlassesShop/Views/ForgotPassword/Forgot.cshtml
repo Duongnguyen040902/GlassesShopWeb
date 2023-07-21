@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Forgot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../DataLogin/fonts_login/icomoon/style.css">
+    <link rel="stylesheet" href="../DataLogin/owl.carousel.min.css">
+    <link rel="stylesheet" href="../DataLogin/css_login/bootstrap.min.css">
+    <link rel="stylesheet" href="../DataLogin/css_login/style.css">
+}
+<body>
+    @using (Html.BeginForm("Forgot", "ForgotPassword", FormMethod.Post))
+    {
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="../DataLogin/images_login/forgot_password.png" alt="Image" class="img-fluid">
+                    </div>
+                    <div class="col-md-6 contents">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="mb-4">
+                                    <h3>Forgot Password</h3>
+                                    @if (!string.IsNullOrEmpty(ViewBag.message))
+                                    {
+                                        <span class="text-danger">@ViewBag.message</span>
+                                    }
+                                </div>
+                                <div class="form-group first">
+                                    <input type="email" class="form-control" name="Email" placeholder="Email">
+                                </div>
+                                <input type="submit" value="Reset Password" class="btn btn-block btn-primary">
+
+                                <span class="ml-auto">
+                                    <a href="@Url.Action("Register", "Register")" class="forgot-pass">Don't have an account? Register</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @section login {
+        <script src="js_login/jquery-3.3.1.min.js"></script>
+        <script src="js_login/popper.min.js"></script>
+        <script src="js_login/bootstrap.min.js"></script>
+        <script src="js_login/main.js"></script>
+    }
+</body>
+
+

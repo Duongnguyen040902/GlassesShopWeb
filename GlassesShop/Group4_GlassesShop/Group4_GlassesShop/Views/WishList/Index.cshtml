@@ -1,0 +1,105 @@
+﻿@model List<Product>;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using Group4_GlassesShop.Models.DataModel;
+@{
+    ViewData["Title"] = "WishList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+    List<int>? WishList = ViewBag.WishList;
+}
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <script>
+        // JavaScript alert function to display the success message
+        alert('@TempData["SuccessMessage"]');
+    </script>
+}
+<section class="shop spad">
+    <div class="container">
+        <div class="row" id="product-list">
+            @*<div class="col-lg-3">
+            </div>*@
+            <div class="col-lg-9">
+                @*<div class="shop__product__option">
+                    
+                </div>*@
+                <div class="row">
+                    @foreach (var p in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                @foreach (var img in @p.Images.Where(i => i.ImageUrl.Contains("chinh")))
+                                {
+                                    <div class="product__item__pic set-bg" data-setbg="@img.ImageUrl">
+                                        <a href="@Url.Action("GetProductByPid", "Shop", new { pid = p.Pid })">
+                                            <img src="@img.ImageUrl" alt="">
+                                        </a>
+                                        <ul class="product__hover">
+                                            <li>
+                                                @if (WishList != null && WishList.Contains(p.Pid))
+                                                {
+                                                    <a href="@Url.ActionLink("Delete","WishList",new {id = p.Pid})"><img src="../Data/img/icon/blackheart.png" alt=""></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.ActionLink("Index","WishList",new {pid = p.Pid})"><img src="../Data/img/icon/heart.png" alt=""></a>
+                                                }
+                                            </li>
+
+                                           
+                                        </ul>
+                                    </div>
+                                }
+                                <div class="product__item__text">
+                                    <h6>@p.ProducctName</h6>
+                                  
+                                   
+                                    <h5>@String.Format("{0:0,00}", p.Price)</h5>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(Model.Count==0){
+                        <h3>There is no favorite product</h3>
+                    }
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+@*code new*@
+@section Sort{
+    <script>
+        function sortProducts() {
+            var sortOption = document.getElementById("sortSelect").value;
+
+            // Get the current page number from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var currentPage = urlParams.get('Page') || 1;
+            var currentCate = urlParams.get('CategoryId')
+            var currentBrand = urlParams.get('BrandId')
+            var search = urlParams.get('Search')
+
+            // Redirect to the Shop action with the updated sort parameter
+            var url = "Shop?Page=" + currentPage + "&Sort=" + sortOption;
+            if (currentCate) {
+                url += "&CategoryId=" + currentCate;
+            }
+            if (currentBrand) {
+                url += "&BrandId=" + currentBrand;
+            }
+
+            if (search) {
+                url += "&Search=" + search
+            }
+
+            window.location.href = url;
+        }
+
+        document.getElementById("sortSelect").addEventListener("change", sortProducts);
+    </script>
+}

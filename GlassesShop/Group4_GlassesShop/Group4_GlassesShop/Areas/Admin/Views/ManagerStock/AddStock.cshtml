@@ -1,0 +1,386 @@
+﻿@model Group4_GlassesShop.Areas.Admin.Models.ManagerStock.ListStock
+
+@{
+    ViewData["Title"] = "AddStock";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+}
+<style>
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .color-radio {
+        display: none; /* Ẩn radio button mặc định */
+    }
+
+    .color-label {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .color-radio:checked + .color-label {
+        background-color: #5cb85c; /* Màu nền khi radio button được chọn */
+        color: #fff; /* Màu chữ khi radio button được chọn */
+    }
+
+    .color-button {
+        background-color: #FFFFFF;
+        color: #171718;
+        border: 1px solid #E5E5E5;
+        box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+        border-radius: 20px;
+        font-weight: 600;
+        padding: 8px 15px;
+        transition: all 0.6s cubic-bezier(0.15, 0.83, 0.66, 1);
+    }
+
+        .color-button:hover {
+            transform: scale(1.05) translateY(-3px);
+        }
+
+    input.input:focus {
+        border-color: #63be63;
+        box-shadow: 0 0 0 2px #63be63;
+    }
+
+    input.input:hover {
+        border-color: #63be63;
+    }
+
+    .color-button.selected {
+        background-color: #63be63;
+        color: #FFFFFF;
+    }
+
+        .color-button.selected:hover {
+            transform: scale(1.05) translateY(-3px);
+        }
+
+
+    button {
+        font-size: 17px;
+        padding: 0.5em 2em;
+        border: transparent;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        background: dodgerblue;
+        color: white;
+        border-radius: 4px;
+    }
+
+        button:hover {
+            background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+        }
+
+        button:active {
+            transform: translate(0em, 0.2em);
+        }
+    .coolinput {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        position: static;
+        max-width: 240px;
+    }
+
+    .required {
+        color: green;
+        font-weight: bold;
+    }
+
+        .coolinput label.text {
+            font-size: 0.75rem;
+            color: #818CF8;
+            font-weight: 700;
+            position: relative;
+            top: 0.5rem;
+            margin: 0 0 0 7px;
+            padding: 0 3px;
+            background: #e8e8e8;
+            width: fit-content;
+        }
+
+        .coolinput input[type=text].input {
+            padding: 11px 10px;
+            font-size: 0.75rem;
+            border: 2px #818CF8 solid;
+            border-radius: 5px;
+            background: #e8e8e8;
+        }
+
+            .coolinput input[type=text].input:focus {
+                outline: none;
+            }
+    .card-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Chia cột thành hai phần bằng nhau */
+        gap: 10px; /* Khoảng cách giữa hai cột */
+    }
+
+    .column {
+/*        background-color: lightgray;*/
+        padding: 10px;
+    }
+
+    .card1 {
+        width: 250px; /* Điều chỉnh chiều rộng theo ý muốn */
+        height: 350px;
+        background: white;
+        padding: .4em;
+        border-radius: 6px;
+    }
+
+    .card-image {
+        background-color: rgb(236, 236, 236);
+        width: 100%;
+        height: 60%;
+        border-radius: 6px 6px 0 0;
+    }
+
+        .card-image:hover {
+            transform: scale(0.98);
+        }
+
+    .category {
+        text-transform: uppercase;
+        font-size: 0.7em;
+        font-weight: 600;
+        color: rgb(63, 121, 230);
+        padding: 10px 7px 0;
+    }
+
+        .category:hover {
+            cursor: pointer;
+        }
+
+    .heading {
+        font-weight: 600;
+        color: rgb(88, 87, 87);
+        padding: 7px;
+    }
+
+        .heading:hover {
+            cursor: pointer;
+        }
+
+    .author {
+        color: gray;
+        font-weight: 400;
+        font-size: 11px;
+        padding-top: 20px;
+    }
+
+    .name {
+        font-weight: 600;
+    }
+
+        .name:hover {
+            cursor: pointer;
+        }
+
+    .categories {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+        padding: 0px 20px 20px 20px;
+    }
+
+        .categories button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 15px;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            box-shadow: 0px 0.5px 0.5px #EFEFEF, 0px 1px 0.5px rgba(239, 239, 239, 0.5);
+            border-radius: 20px;
+            font-weight: 600;
+            color: #171718;
+            transition: all 0.6s cubic-bezier(0.15, 0.83, 0.66, 1);
+        }
+
+            .categories button:hover {
+                transform: scale(1.05) translateY(-3px);
+            }
+
+    .container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .card {
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    .card1 {
+        flex: 0 0 auto; /* Card 1 giữ nguyên kích thước */
+    }
+
+    .card2 {
+        flex: 1 0 auto; /* Card 2 co dãn để lấp đầy phần còn lại */
+    }
+
+</style>
+<hr />
+<div class="container">
+        <div class="card card1">
+        @{
+            var img = context.Images.Where(i => i.Pid == Model.GetProduct.Pid && i.ImageUrl.Contains("chinh")).FirstOrDefault();
+        }
+        <img class="card-image" src="@img.ImageUrl" alt="Card Image">
+        <div class="category">@Model.GetProduct.ProducctName</div>
+        <div class="card-columns">
+            <div class="column">
+                <div class="label">Color</div>
+                @foreach (var stockList in Model.GetAllStockByPid)
+                {
+                    var colorName = context.Colors.SingleOrDefault(c => c.ColorId == stockList.ColorId);
+                    <div class="value">@colorName.ColorName</div>
+                }
+            </div>
+            <div class="column">
+                <div class="label">Quantity</div>
+                @foreach (var stockList in Model.GetAllStockByPid)
+                {
+                    <div class="value">@stockList.Quantity</div>
+                }
+            </div>
+        </div>
+</div>
+    <div class="card card2">
+        <div class="card card2">
+            @using (Html.BeginForm("AddStock", "ManagerStock", FormMethod.Post, new { onsubmit = "return validateForm();" }))
+            {
+                <div class="categories">
+                    @foreach (var color in context.Colors.ToList())
+                    {
+                        <input type="radio" name="ColorId" value="@color.ColorId" id="color_@color.ColorId" class="color-radio" onclick="selectColor(this)" />
+                        <label for="color_@color.ColorId" class="color-label">@color.ColorName</label>
+                    }
+                    <input type="radio" name="ColorId" value="0" id="othersBtn" class="color-radio" onclick="handleColorSelection(this)" />
+                    <label for="othersBtn" class="color-label">Others</label>
+                    <div id="newColorContainer" style="display: none;">
+                        <br>
+                        <input type="text" name="NewColor" id="newColorInput" placeholder="Enter New Color...">
+                    </div>
+                </div>
+                <div id="nameInputContainer"></div>
+                <div class="coolinput">
+                    <label for="input" class="text">Quantity<span class="required">*</span>:</label>
+                    <input type="text" placeholder="Enter Quantity..." name="Quantity" class="input" onfocus="highlightQuantity()" onblur="resetColor()">
+                    <div id="quantityError" class="error-message" style="display:none;">Quantity must be a positive number.</div>
+
+                </div>
+                <input type="hidden" name="ProductId" value="@Model.GetProduct.Pid">
+                <button type="submit">Add</button>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    function handleColorSelection(element) {
+        var newColorContainer = document.getElementById("newColorContainer");
+        var newColorInput = document.getElementById("newColorInput");
+
+        if (element.checked) {
+            newColorContainer.style.display = "block";
+            newColorInput.setAttribute("name", "NewColor");
+        } else {
+            newColorContainer.style.display = "none";
+            newColorInput.removeAttribute("name");
+        }
+    }
+
+</script>
+@section Stock{
+<script>
+        function validateForm() {
+            var quantityInput = document.querySelector('input[name="Quantity"]');
+            var quantity = parseInt(quantityInput.value);
+            var newColorInput = document.getElementById("newColorInput");
+            var newColorValue = newColorInput.value.trim();
+
+            var digitPattern = /\d/; // Biểu thức chính quy để kiểm tra chữ số
+
+            if (isNaN(quantity) || quantity <= 0) {
+                document.getElementById("quantityError").style.display = "block";
+                return false;
+            }
+            //else if (newColorValue === "" || digitPattern.test(newColorValue)) {
+            //    alert("Please enter a valid color.");
+            //    return false;
+            //}
+
+            return true;
+        }
+
+        function selectColor(button) {
+            const colorButtons = document.querySelectorAll(".color-button");
+            colorButtons.forEach(btn => {
+                btn.classList.remove("selected");
+            });
+
+            button.classList.add("selected");
+        }
+
+        function highlightQuantity() {
+            const colorButtons = document.querySelectorAll(".color-button");
+            colorButtons.forEach(button => {
+                if (!button.classList.contains("selected")) {
+                    button.style.backgroundColor = "";
+                }
+            });
+        }
+
+        function resetColor() {
+            const colorButtons = document.querySelectorAll(".color-button");
+            colorButtons.forEach(button => {
+                button.style.backgroundColor = "";
+            });
+        }
+
+        highlightQuantity(); // Gọi hàm để áp dụng màu cho Quantity ban đầu
+
+        const othersBtn = document.getElementById("othersBtn");
+        const nameInputContainer = document.getElementById("nameInputContainer");
+        let isNameInputVisible = false; // Biến cờ để theo dõi trạng thái hiển thị của trường nhập tên
+
+        othersBtn.addEventListener("click", function () {
+            if (!isNameInputVisible) {
+                const nameInput = document.createElement("input");
+                nameInput.setAttribute("type", "text");
+                //nameInput.setAttribute("placeholder", "Enter new color");
+                nameInputContainer.innerHTML = ""; // Xóa bỏ nội dung hiện có (nếu có)
+                nameInputContainer.appendChild(nameInput);
+                isNameInputVisible = true;
+            }
+        });
+
+        // Xử lý sự kiện khi nhấp vào các nút khác
+        const categoryButtons = document.querySelectorAll(".categories input[type='radio']:not(#othersBtn)");
+
+        categoryButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                if (isNameInputVisible) {
+                    nameInputContainer.style.display = "none"; // Ẩn trường nhập tên nếu đang hiển thị
+                    isNameInputVisible = false;
+                }
+            });
+        });
+
+    </script>
+}

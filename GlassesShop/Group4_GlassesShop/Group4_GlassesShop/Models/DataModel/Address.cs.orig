@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Group4_GlassesShop.Models.DataModel
+{
+    public partial class Address
+    {
+        public int AddressId { get; set; }
+        public string WardsCode { get; set; } = null!;
+        public string ProvincesCode { get; set; } = null!;
+        public string DistrictsCode { get; set; } = null!;
+        public int CustomerId { get; set; }
+
+        public virtual Customer? Customer { get; set; } = null!;
+        public virtual District? DistrictsCodeNavigation { get; set; } = null!;
+        public virtual Province? ProvincesCodeNavigation { get; set; } = null!;
+        public virtual Ward? WardsCodeNavigation { get; set; } = null!;
+    }
+}

@@ -1,0 +1,116 @@
+﻿@model Group4_GlassesShop.Models.DataModel.Product
+
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>Product Details</h1>
+
+<div>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-">
+			Product Name
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.ProducctName)
+		</dd>
+
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Description)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Description)
+		</dd>
+
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Price)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Price)
+		</dd>
+
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Created)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Created)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Updated)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Updated)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.BestSeller)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.BestSeller)
+		</dd>
+
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Brand)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Brand.Bname)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Category)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Category.Cname)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Feature)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Feature.FeatureName)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Shape)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Shape.ShapeName)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Type)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Type.TypeName)
+		</dd>
+		<dt class="col-sm-3">
+			Color-Quantity
+		</dt>
+		@{
+			var st = (List<Group4_GlassesShop.Models.DataModel.Stock>)@ViewData["stock"];
+		}
+		@foreach (var s in st)
+		{
+			@if (s.ColorId == s.Color.ColorId)
+			{
+				<dd class="col-sm-2">
+					@s.Color.ColorName --  @s.Quantity
+				</dd>
+			}
+		}
+		<br />
+		
+		<dt class="col-sm-12">
+			Image
+		</dt>
+		<br />
+		<div style="display: inline-block;">
+			@foreach (var img in Model.Images)
+			{
+				<img style="display: inline-block; height:100px; width:100px;" src="@img.ImageUrl" />
+			}
+		</div>
+	</dl>
+</div>
+<div>
+	<a asp-action="Edit" asp-route-id="@Model?.Pid">Edit</a> |
+	<a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,13 @@
+﻿using Group4_GlassesShop.Models.DataModel;
+
+namespace Group4_GlassesShop.Models.MyOrderProcedure
+{
+    public interface IOrderDAO
+    {
+        List<Order> GetOrdersByCustomerId(int customerId);
+        List<Order> GetOrderByOrderIdAndCustomerId(string searchKey, int customerId);
+        List<Order> GetOrderByOrderIdAndCustomerId1(string searchKey, int customerId);
+        Product GetProductById(int productId);
+
+    }
+}

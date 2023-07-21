@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Group4_GlassesShop.Models.DataModel.Ward>
+<style>
+    .custom-select {
+        height: auto;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+</style>
+<select id="wards" name="SelectedWardId" class="form-control custom-select">
+@foreach (var ward in Model)
+{
+        <option value="@ward.WCode">@ward.FullNameEn</option>
+}
+</select>

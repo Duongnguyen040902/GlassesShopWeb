@@ -1,0 +1,168 @@
+﻿@model Group4_GlassesShop.Models.DataModel.Product
+
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+
+
+<h1>Edit</h1>
+<h4>Product</h4>
+<hr />
+<form asp-action="Edit">
+	<div class="row">
+		<div class="col-md-5">
+
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Pid" />
+			<div class="form-group">
+				<label asp-for="ProducctName" class="control-label"></label>
+				<input asp-for="ProducctName" class="form-control" />
+				<span asp-validation-for="ProducctName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Price" class="control-label"></label>
+				<input asp-for="Price" class="form-control" />
+				<span asp-validation-for="Price" class="text-danger"></span>
+			</div>
+			@*<div class="form-group">
+			<h4>Colors</h4>
+			<table>
+			<thead>
+			<tr>
+			<th>Color Name</th>
+			<th>Quantity</th>
+			</tr>
+			</thead>
+			<tbody>
+			@for (int i =0 ; i < Model.ColorProducts.Count; i++)
+			{
+			var colorProduct = i < Model.ColorProducts.Count? Model.ColorProducts.ElementAt(i):null; // Get the element at the current index
+			<tr>
+			@if (colorProduct!=null)
+			{
+			<td>
+			<input type="text" name="colorProducts[@i].ColorName" value="@colorProduct.ColorName" />
+			<input type="hidden" name="colorProducts[@i].ColorId" value="@colorProduct.ColorId" />
+			<input type="hidden" name="colorProducts[@i].Pid" value="@colorProduct.Pid" />
+			<input type="hidden" name="colorProducts[@i].PidNavigation" value="@colorProduct.PidNavigation" />
+
+			</td>
+			<td>
+			<input type="number" name="colorProducts[@i].Quantity" min="0" value="@colorProduct.Quantity" />
+			</td>
+			}
+			</tr>
+			}
+			</tbody>
+			</table>
+			</div>*@
+			
+			<div class="form-group">
+				<label asp-for="CategoryId" class="control-label"></label>
+				<select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+				<span asp-validation-for="CategoryId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="BrandId" class="control-label"></label>
+				<select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+				<span asp-validation-for="BrandId" class="text-danger"></span>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="TypeId" class="control-label"></label>
+				<select asp-for="TypeId" class="form-control" asp-items="ViewBag.TypeId"></select>
+				<span asp-validation-for="TypeId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ShapeId" class="control-label"></label>
+				<select asp-for="ShapeId" class="form-control" asp-items="ViewBag.ShapeId"></select>
+				<span asp-validation-for="ShapeId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="FeatureId" class="control-label"></label>
+				<select asp-for="FeatureId" class="form-control" asp-items="ViewBag.FeatureId"></select>
+				<span asp-validation-for="FeatureId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Created" class="control-label"></label>
+				<input type="hidden" asp-for="Created" class="form-control" />
+				<span asp-validation-for="Created" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Updated" class="control-label"></label>
+				<input type="hidden" asp-for="Updated" class="form-control" value="@DateTime.Now" />
+				<span asp-validation-for="Updated" class="text-danger"></span>
+			</div>
+			<div class="form-group form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" asp-for="BestSeller" /> @Html.DisplayNameFor(model => model.BestSeller)
+				</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</div>
+		<div class="col-md-7">
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<textarea asp-for="Description" class="form-control" style="height: 350px"></textarea>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<h4 style="color:red">@ViewData["error image"]</h4>
+				<h4>Image Link</h4>
+				<ul>
+					@for (int i = 0; i < Model.Images.Count; i++)
+					{
+						var image = Model.Images.ElementAt(i);
+						<li>
+							Change:
+							<input type="file" accept="image/*" id="image-path-@i" name="images[@i].ImageUrl"  onchange="handleFileSelect(event, @i)"><br>
+							@*@if(File is not chose){
+						<input type="hidden" name="images[@i].ImageUrl" value="@image.ImageUrl" d/>
+						}*@
+							<p id="img-display-text-@i">@image.ImageUrl</p>
+							<img style="height:100px;width:auto" src="@image.ImageUrl" id="img-display-@i"><br>
+							<input type="hidden" name="images[@i].ImageId" value="@image.ImageId" />
+							<input type="hidden" name="images[@i].Pid" value="@image.Pid" />
+						</li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+</form>
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+
+<script>
+	function handleFileSelect(event, index) {
+		var input = event.target;
+		var file = input.files[0];
+
+		// Check if the file name contains a space
+		if (file && file.name.includes(' ')) {
+			alert('Please select a file without spaces in the name.');
+			input.value = null; // Clear the selected file
+		} else {
+			// File is valid, proceed with further processing
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				var path = e.target.result;
+				document.getElementById('img-display-' + index).src = path;
+				document.getElementById('img-display-text-' + index).textContent = path;
+				document.getElementById('image-path-' + index).value = path;
+			};
+
+			reader.readAsDataURL(file);
+		}
+	}
+</script>

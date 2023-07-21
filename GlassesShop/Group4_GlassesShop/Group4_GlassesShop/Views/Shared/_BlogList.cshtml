@@ -1,0 +1,39 @@
+﻿@model List<Group4_GlassesShop.Models.DataModel.Blog>
+@{
+    Group4_GlassesShop.Models.DataModel.GlassesShopContext context = new Group4_GlassesShop.Models.DataModel.GlassesShopContext();
+    bool isEmpty = Model.Count == 0;
+}
+<div class="row" id="blog-container">
+    <!-- Đây là nơi sẽ cập nhật danh sách blog -->
+    @if (isEmpty)
+    {
+        <div class="message">Không có blog để hiển thị</div>
+    }
+    else
+    {
+        @foreach (var blog in Model)
+        {
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic blog-image" data-setbg="@blog.Image"></div>
+                    <div class="blog__item__text">
+                        <span><img src="../Data/img/icon/calendar.png" alt="">@blog.PuslishDate.ToString("dd MMMM yyyy")</span>
+                        <h5>@blog.Title</h5>
+                        <a href="@Url.Action("BlogDetails","BlogDetails")?blogId=@blog.BlogId">Read More</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<script>
+    // Set background image using data-setbg attribute
+    $(document).ready(function () {
+        $('.blog-image').each(function () {
+            var imgUrl = $(this).data('setbg');
+            $(this).css('background-image', 'url("' + imgUrl + '")');
+        });
+    });
+</script>
+
